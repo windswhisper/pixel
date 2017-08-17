@@ -1,0 +1,78 @@
+window.onload=function(){
+	var socket = new WebSocket('ws://111.206.45.12:30262');
+	socket.onopen = function(event) { 
+
+	socket.onmessage = function(result,nTime){
+	var orderListGet =  JSON.parse(result.data);
+	for(var i=0;i<orderListGet.length;i++)
+	{
+		new drawPointOrder(orderListGet[i].x,orderListGet[i].y).excute();
+	}
+		}
+
+	  socket.onclose = function(event) { 
+		console.log('Client notified socket has closed',event); 
+	  }; 
+	};
+
+	var c=document.getElementById("draw_canvas");
+	var cxt=c.getContext("2d");
+		cxt.fillStyle="#000000";
+	var color = 1;
+	var is_press = false;
+
+	var orderList = [];
+
+	var drawPointOrder = function(x,y,color)
+	{
+		this.x=x;
+		this.y=y;
+		this.color = color;
+		this.excute=function()
+		{
+		cxt.fillRect(this.x*10,this.y*10,10,10);
+		}
+	}
+
+	function drawPoint(x,y,color)
+	{
+		var order =  new drawPointOrder(x,y,color);
+		orderList[orderList.length] = order;
+		order.excute();
+	}
+
+	function sendOrderList()
+	{
+		var data = JSON.stringify(orderList);
+		console.log(data);
+		socket.send(data);
+		orderList = [];
+	}
+
+	c.onmousedown = function(e)
+	{
+		is_press = true;
+
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	drawPoint(x,y);
+	}
+	c.onmouseup = function(e)
+	{
+		is_press = false;
+		sendOrderList();
+	}
+	c.onmousemove = function(e)
+	{  
+		if(!is_press)return;
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	drawPoint(x,y);
+	}
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>像素画</title> 
+    <meta charset="UTF-8"><head>
+    <meta name="viewport"  content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/draw.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+</head>
+</head>
+<body>   
+	<div id="top_view">
+		<div id="painter_view">
+		</div>
+		<div id="invite_view">
+		</div>
+	</div>
+	<div id="draw_view">
+		<canvas id="draw_canvas"  width=320 height=320>
+
+		</canvas>
+	</div>
+	<div id="color_view">
+		<div id="main_color_list">
+			<span class="color_item" style="background-color:#818181"></span>
+			<span class="color_item" style="background-color:#01a2ff"></span>
+			<span class="color_item" style="background-color:#00a99c"></span>
+			<span class="color_item" style="background-color:#1eb100"></span>
+			<span class="color_item" style="background-color:#f9ba00"></span>
+			<span class="color_item" style="background-color:#ee220d"></span>
+			<span class="color_item" style="background-color:#cb2a7b"></span>
+			<span class="color_item" style="background-color:#bc3dcd"></span>
+		</div>
+		<div id="sub_color_list">
+			<span class="color_item" style="background-color:#fff;box-shadow : 0 0 0 1px #e7e7e7;"></span>
+			<span class="color_item" style="background-color:#ddd"></span>
+			<span class="color_item" style="background-color:#bbb"></span>
+			<span class="color_item" style="background-color:#999"></span>
+			<span class="color_item" style="background-color:#777"></span>
+			<span class="color_item" style="background-color:#555"></span>
+			<span class="color_item" style="background-color:#333"></span>
+		</div>
+	</div>
+	<div id="bottom_view" >
+		<span id="pencil_button" class="bottom_btn">
+			<img src="img/ico_pen.png" class="img_btn"/>
+		</span>
+		<span id="line_button" class="bottom_btn">
+			<img src="img/ico_line.png" class="img_btn"/>
+		</span>
+		<span id="fill_button" class="bottom_btn">
+			<img src="img/ico_bucket.png" class="img_btn"/>
+		</span>
+		<span id="straw_button" class="bottom_btn">
+			<img src="img/ico_picker.png" class="img_btn"/>
+		</span>
+		<span id="menu_button" class="bottom_btn">
+			<img src="img/ico_menu.png" class="img_btn"/>
+		</span>
+	</div>
+</body>
+</html>

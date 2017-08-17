@@ -1,0 +1,273 @@
+
+var EVENT_JOIN = 1001;
+var EVENT_DRAW = 1002;
+
+var ORDER_TYPE_POINT = 1;
+var ORDER_TYPE_LINE = 2;
+var ORDER_TYPE_FILL = 3;
+
+	var c;
+	var cxt;
+	var color = 1;
+	var is_press = false;
+
+	var width = 64;
+	var height = 64;
+	var bitmap = [];
+
+	var orderList = [];
+	var socket;
+
+window.onload=function(){
+	socket = new WebSocket('ws://111.206.45.12:30262');
+	socket.onopen = function(event) { 
+
+	socket.send('{"event":1001,"index":0}');
+
+	socket.onmessage = function(result,nTime){
+		var orderListGet =  JSON.parse(result.data);
+		for(var i=0;i<orderListGet.length;i++)
+		{
+			var order = orderListGet[i];
+			if(order.type==ORDER_TYPE_POINT)
+				new drawPointOrder(order.x,order.y,order.color).excute();
+			else if(order.type==ORDER_TYPE_LINE)
+				new drawLineOrder(order.x1,order.y1,order.x2,order.y2,order.color).excute();
+			else if(order.type==ORDER_TYPE_LINE)
+				new fillColorOrder(order.x,order.y,order.color).excute();
+		}
+	}
+
+	  socket.onclose = function(event) { 
+		console.log('Client notified socket has closed',event); 
+	  }; 
+	};
+
+	c=document.getElementById("draw_canvas");
+	cxt=c.getContext("2d");
+
+	c.onmousedown = function(e)
+	{
+		is_press = true;
+
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	drawPoint(x,y,color);
+	}
+	c.onmouseup = function(e)
+	{
+		is_press = false;
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+		fillColor(x,y,0);
+		sendOrderList();
+	}
+	c.onmousemove = function(e)
+	{  
+		if(!is_press)return;
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	drawPoint(x,y);
+	}
+
+	init(64,64);
+}
+
+	function init(w,h)
+	{
+		width = w;
+		height = h;
+		for(var i=0;i<w;i++)
+		{
+			bitmap[i] = [];
+			for(var j=0;j<h;j++)
+				bitmap[i][j] = 0;
+		}
+	}
+
+	function putOrderInList(order)
+	{
+		orderList[orderList.length] = order;
+	}
+	function drawPointOrder(x,y,color)
+	{
+		this.type=ORDER_TYPE_POINT;
+		this.x=x;
+		this.y=y;
+		this.color = color;
+		this.excute=function()
+		{
+			setPointColor(x,y,decodeColor(color));
+		}
+	}
+	function drawLineOrder(x1,y1,x2,y2,color)
+	{
+		this.type=ORDER_TYPE_LINE;
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+		this.color = color;
+		this.excute = function()
+		{
+		    var steep = (Math.abs(y2-y1)>Math.abs(x2-x1));
+		    var swap;
+		    if(steep)
+		    {
+		      swap = x1;
+		      x1 = y1;
+		      y1 = swap;
+		      swap = x2;
+		      x2 = y2;
+		      y2 = swap;
+		    }
+		    if(x1>x2)
+		    {
+		      swap = x1;
+		      x1 = x2;
+		      x2 = swap;
+		      swap = y1;
+		      y1 = y2;
+		      y2 = swap;
+		    }
+		    var dx = Math.abs(x2-x1);
+		    var dy = Math.abs(y2-y1);
+		    var p = 2*dy-dx;
+		    var const1 = 2*dy;
+		    var const2 = 2*(dy-dx);
+		    var x = x1;
+		    var y = y1;
+		    var inc = (y1<y2);
+
+		    while(x<=x2)
+		    {
+		      if(steep == 1)
+				setPointColor(y,x,decodeColor(color));
+			 else
+				setPointColor(x,y,decodeColor(color));
+			 x++;
+		      if(p<0)
+		        p+=const1;
+		      else
+		      {
+		        p+=const2;
+		        y+=inc;
+		      }
+		    }
+		}
+	}
+	function fillColorOrder(x,y,color)
+	{
+		this.type=ORDER_TYPE_FILL;
+		this.x=x;
+		this.y=y;
+		this.color = color;
+		this.excute = function()
+		{
+			spreadColor(x,y,decodeColor(color));
+		}
+	}
+	function spreadColor(x,y,color)
+	{
+		if(bitmap[x][y]==null)return;
+		var colorRepleced = bitmap[x][y];
+		setPointColor(x,y,color);
+		if(bitmap[x-1][y]==colorRepleced)
+		{
+			spreadColor(x-1,y,color);
+		}
+		if(bitmap[x+1][y]==colorRepleced)
+		{
+			spreadColor(x+1,y,color);
+		}
+		if(bitmap[x][y-1]==colorRepleced)
+		{
+			spreadColor(x,y-1,color);
+		}
+		if(bitmap[x][y+1]==colorRepleced)
+		{
+			spreadColor(x,y+1,color);
+		}
+
+	}
+
+	function drawPoint(x,y,color)
+	{
+		var order =  new drawPointOrder(x,y,encodeColor(color));
+		putOrderInList(order);
+		order.excute();
+	}
+	function drawLine(x1,y1,x2,y2,color)
+	{
+		var order = new drawLineOrder(x1,y1,x2,y2,encodeColor(color));
+		putOrderInList(order);
+		order.excute();
+	}
+	function fillColor(x,y,color)
+	{
+		var order = new fillColorOrder(x,y,encodeColor(color));
+		putOrderInList(order);
+		order.excute();
+	}
+
+	function setPointColor(x,y,color)
+	{
+		this.bitmap[x][y] = color;
+		cxt.fillStyle=getColorFromCode(color);
+		cxt.fillRect(x*10,y*10,10,10);
+	}
+
+
+	function sendOrderList()
+	{
+		var data = orderList;
+		var obj = {};
+		obj.event = EVENT_DRAW;
+		obj.order = data;
+		console.log(JSON.stringify(obj));
+		socket.send(JSON.stringify(obj));
+		orderList = [];
+	}
+
+	function encodeColor(color)
+	{
+		return String.fromCharCode(color+48);
+	}
+
+	function decodeColor(str,index)
+	{
+		return str.charCodeAt(index)-48;
+	}
+
+	  function encodeBitmap()
+	  {
+	    var str = "";
+	    for(var i=0;i<width;i++)
+	        for(var j=0;j<height;j++)
+	        {
+	          str+=encodeColor(bitmap[i][j]);
+	        }
+	    return str;
+	  }
+	  function decodeBitmap(str)
+	  {
+	    for(var i=0;i<self.width;i++)
+	        for(var j=0;j<self.height;j++)
+	        {
+	          bitmap[i][j] = decodeColor(str, j*width+i);
+	        }
+	  }
+	  function getColorFromCode(code)
+	  {
+	  	if(code==1)return "#dd0000"
+	  	return "#0000ee"
+	  }

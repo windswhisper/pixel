@@ -1,0 +1,365 @@
+
+var EVENT_JOIN = 1001;
+var EVENT_DRAW = 1002;
+
+var ORDER_TYPE_POINT = 1;
+var ORDER_TYPE_LINE = 2;
+var ORDER_TYPE_FILL = 3;
+
+	var c;
+	var cxt;
+	var color = 7;
+	var is_press = false;
+
+	var width = 64;
+	var height = 64;
+	var bitmap = [];
+
+	var orderList = [];
+	var socket;
+
+	var paintType = ORDER_TYPE_POINT;
+	var lineOx = 0;
+	var lineOy = 0;
+
+var COLOR = [
+"#ffffff","#f5f5f5","#e0e0e0","#bdbdbd","#bdbdbd","#757575","#424242","#000000",
+"#e1f5fe","#b3e5fc","#4fc3f7","#03a9f4","#039be5","#0288d1","#0277bd","#01579b",
+"#e0f2f1","#b2dfdb","#80cbc4","#4db6ac","#009688","#00897b","#00695c","#004d40",
+"#d0f8ce","#a3e9a4","#72d572","#42bd41","#259b24","#0a8f08","#056f00","#0d5302",
+"#fffde7","#fff9c4","#fff59d","#fff176","#ffeb3b","#fdd835","#f9a825","#f57f17",
+"#fff3e0","#ffe0b2","#ffcc80","#ffb74d","#ff9800","#fb8c00","#ef6c00","#e65100",
+"#fde0dc","#f9bdbb","#f69988","#f36c60","#e52c23","#dd191d","#c41411","#b0120a",
+"#f3e5f5","#e1bee7","#ce93d8","#ba68c8","#9c27b0","#8e24aa","#6a1b9a","#4a148c",
+];
+
+window.onload=function(){
+	socket = new WebSocket('ws://111.206.45.12:30020');
+	socket.onopen = function(event) { 
+
+	socket.send('{"event":1001,"index":0}');
+
+	socket.onmessage = function(result,nTime){
+		var res =  JSON.parse(result.data);
+		console.log(res);
+		switch(res.event)
+		{
+			case 2001:parseBitmap(res.data);
+				break;
+			case 2002:parseOrderlist(res.data);
+				break;
+		}
+	}
+	  socket.onclose = function(event) { 
+		console.log('Client notified socket has closed',event); 
+	  }; 
+	};
+
+
+
+	c=document.getElementById("draw_canvas");
+	cxt=c.getContext("2d");
+
+	c.onmousedown = function(e)
+	{
+		is_press = true;
+
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	if(paintType==ORDER_TYPE_POINT)
+    	{
+    		drawPoint(x,y,color);
+    	}
+    	if(paintType==ORDER_TYPE_LINE)
+    	{
+    		lineOx=x;
+    		lineOy=y;
+    	}
+
+	}
+	c.onmouseup = function(e)
+	{
+		is_press = false;
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	if(paintType==ORDER_TYPE_FILL)
+    		fillColor(x,y,color);
+    	if(paintType==ORDER_TYPE_LINE)
+    		drawLine(lineOx,lineOy,x,y,color);
+		sendOrderList();
+	}
+	c.onmousemove = function(e)
+	{  
+		if(!is_press)return;
+	  	e=e||event;
+    	var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+    	if(paintType==ORDER_TYPE_POINT)
+    		drawPoint(x,y,color);
+	}
+
+	$("#pencil_button").click (function()
+	{
+		color = 1;
+		paintType = ORDER_TYPE_POINT;
+	});
+	$("#line_button").click (function()
+	{
+		color = 2;
+		paintType = ORDER_TYPE_LINE;
+	});
+	$("#fill_button").click (function()
+	{
+		paintType = ORDER_TYPE_FILL;
+	});
+
+
+	function onTouchStart(event) {
+		return true;
+	}
+
+	function onTouchMove(event) {
+		var e = event || window.event;  
+		var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+
+    	if(paintType==ORDER_TYPE_POINT)
+    		drawPoint(x,y,color);
+
+	    event.preventDefault();
+	    return true;
+	}
+   var touchable = 'createTouch' in document;
+
+	if (touchable) {
+	    c.addEventListener('touchstart', onTouchStart, false);
+	    c.addEventListener('touchmove', onTouchMove, false);
+	    c.addEventListener('touchend', onTouchEnd, false);
+	}
+
+
+	init(64,64);
+}
+
+
+function parseOrderlist(orderListGet)
+{
+	var orderList = JSON.parse(orderListGet);
+	for(var i=0;i<orderList.length;i++)
+		{
+			var order = orderList[i];
+			if(order.type==ORDER_TYPE_POINT)
+				new drawPointOrder(order.x,order.y,order.color).excute();
+			else if(order.type==ORDER_TYPE_LINE)
+				new drawLineOrder(order.x1,order.y1,order.x2,order.y2,order.color).excute();
+			else if(order.type==ORDER_TYPE_FILL)
+				new fillColorOrder(order.x,order.y,order.color).excute();
+			
+		}
+}
+
+function parseBitmap(data)
+{
+	decodeBitmap(data.bitmap);
+}
+
+	function init(w,h)
+	{
+		width = w;
+		height = h;
+		for(var i=0;i<w;i++)
+		{
+			bitmap[i] = [];
+			for(var j=0;j<h;j++)
+				bitmap[i][j] = 0;
+		}
+	}
+
+	function putOrderInList(order)
+	{
+		orderList[orderList.length] = order;
+	}
+	function drawPointOrder(x,y,color)
+	{
+		this.type=ORDER_TYPE_POINT;
+		this.x=x;
+		this.y=y;
+		this.color = color;
+		this.excute=function()
+		{
+			setPointColor(x,y,decodeColor(color));
+		}
+	}
+	function drawLineOrder(x1,y1,x2,y2,color)
+	{
+		this.type=ORDER_TYPE_LINE;
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+		this.color = color;
+		this.excute = function()
+		{
+		    var steep = (Math.abs(y2-y1)>Math.abs(x2-x1));
+		    var swap;
+		    if(steep)
+		    {
+		      swap = x1;
+		      x1 = y1;
+		      y1 = swap;
+		      swap = x2;
+		      x2 = y2;
+		      y2 = swap;
+		    }
+		    if(x1>x2)
+		    {
+		      swap = x1;
+		      x1 = x2;
+		      x2 = swap;
+		      swap = y1;
+		      y1 = y2;
+		      y2 = swap;
+		    }
+		    var dx = Math.abs(x2-x1);
+		    var dy = Math.abs(y2-y1);
+		    var p = 2*dy-dx;
+		    var const1 = 2*dy;
+		    var const2 = 2*(dy-dx);
+		    var x = x1;
+		    var y = y1;
+		    var inc = -1;
+		    if(y1<y2)inc=1;
+
+		    while(x<=x2)
+		    {
+		      if(steep == 1)
+				setPointColor(y,x,decodeColor(color));
+			 else
+				setPointColor(x,y,decodeColor(color));
+			 x++;
+		      if(p<0)
+		        p+=const1;
+		      else
+		      {
+		        p+=const2;
+		        y+=inc;
+		      }
+		    }
+		}
+	}
+	function fillColorOrder(x,y,color)
+	{
+		this.type=ORDER_TYPE_FILL;
+		this.x=x;
+		this.y=y;
+		this.color = color;
+		this.excute = function()
+		{
+			spreadColor(x,y,decodeColor(color),bitmap[x][y]);
+		}
+	}
+	function spreadColor(x,y,color,colorRepleced)
+	{
+		if(color==colorRepleced)return;
+
+		setPointColor(x,y,color);
+
+		if(x-1>=0&&bitmap[x-1][y]==colorRepleced)
+		{
+			spreadColor(x-1,y,color,colorRepleced);
+		}
+		if(x+1<width&&bitmap[x+1][y]==colorRepleced)
+		{
+			spreadColor(x+1,y,color,colorRepleced);
+		}
+		if(y-1>=0&&bitmap[x][y-1]==colorRepleced)
+		{
+			spreadColor(x,y-1,color,colorRepleced);
+		}
+		if(y+1<height&&bitmap[x][y+1]==colorRepleced)
+		{
+			spreadColor(x,y+1,color,colorRepleced);
+		}
+	}
+
+	function drawPoint(x,y,color)
+	{
+		var order =  new drawPointOrder(x,y,encodeColor(color));
+		putOrderInList(order);
+		order.excute();
+	}
+	function drawLine(x1,y1,x2,y2,color)
+	{
+		var order = new drawLineOrder(x1,y1,x2,y2,encodeColor(color));
+		putOrderInList(order);
+		order.excute();
+	}
+	function fillColor(x,y,color)
+	{
+		var order = new fillColorOrder(x,y,encodeColor(color));
+		putOrderInList(order);
+		order.excute();
+	}
+
+	function setPointColor(x,y,color)
+	{
+		if(x>width-1||y>height-1)return;
+		this.bitmap[x][y] = color;
+		cxt.fillStyle=getColorFromCode(color);
+		cxt.fillRect(x*10,y*10,10,10);
+	}
+
+
+	function sendOrderList()
+	{
+		var data = orderList;
+		var obj = {};
+		obj.event = EVENT_DRAW;
+		obj.order = data;
+		socket.send(JSON.stringify(obj));
+		orderList = [];
+	}
+
+	function encodeColor(color)
+	{
+		return String.fromCharCode(color+48);
+	}
+
+	function decodeColor(str,index)
+	{
+		return str.charCodeAt(index)-48;
+	}
+
+	  function encodeBitmap()
+	  {
+	    var str = "";
+	    for(var j=0;j<height;j++)
+	    	for(var i=0;i<width;i++)
+	        {
+	          str+=encodeColor(bitmap[i][j]);
+	        }
+	    return str;
+	  }
+	  function decodeBitmap(str)
+	  {
+	    for(var i=0;i<self.width;i++)
+	        for(var j=0;j<self.height;j++)
+	        {
+	          //bitmap[i][j] = decodeColor(str, j*width+i);
+	          setPointColor(i,j,decodeColor(str,j*width+i));
+	        }
+	  }
+	  function getColorFromCode(code)
+	  {
+	  	return COLOR[code];
+	  }

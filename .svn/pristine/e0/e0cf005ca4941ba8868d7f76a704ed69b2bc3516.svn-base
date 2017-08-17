@@ -1,0 +1,41 @@
+var cons = new Array();
+var ws = require('ws').Server;
+var server = new ws({port:8808});
+
+var clientList = [];
+
+server.on('connection',function(ws){
+  	console.log('new connection founded successfully');
+
+  	cons.push(ws);
+
+  	clientList[clientList.length]=ws;
+	ws.on("message",function(data){
+      	for(var i=0;i<clientList.length;i++){
+       		clientList[i].send(data);
+    	}
+    });
+  	ws.on('close',function(){
+    	for(var i=0;i<cons.length;i++){
+       		if(cons[i] == ws) cons.splice(i,1);
+    	}
+    	for(var i=0;i<clientList.length;i++){
+       		if(clientList[i] == ws) clientList.splice(i,1);
+    	}
+  	});
+});
+
+
+
+var http = require('http');
+var fs   = require("fs");
+
+http.createServer(function (request, response) {
+
+  console.log('http req');
+  //response.writeHead(200, {'Content-Type': 'text/html'});
+  var url = request.url;
+  fs.readFile(url.slice(1),function (err,data){
+                response.end(data);
+            });
+}).listen(18080);
