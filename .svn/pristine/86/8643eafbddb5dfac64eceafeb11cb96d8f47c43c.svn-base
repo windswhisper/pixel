@@ -18,13 +18,13 @@
 		</div>
 	</div>
 	<div id="draw_view">
-		<canvas id="draw_canvas" style="background-color:#039be5">
+		<canvas id="draw_canvas"  width=160 height=160>
 
 		</canvas>
 	</div>
 	<div id="color_view">
 		<div id="main_color_list">
-			<span id="main_color_0" class="color_item" style="background-color:#9e9e9e"></span>
+			<span id="main_color_0" class="color_item" style="background-color:#bdbdbd"></span>
 			<span id="main_color_1" class="color_item" style="background-color:#039be5"></span>
 			<span id="main_color_2" class="color_item" style="background-color:#009688"></span>
 			<span id="main_color_3" class="color_item" style="background-color:#259b24"></span>
@@ -34,14 +34,14 @@
 			<span id="main_color_7" class="color_item" style="background-color:#9c27b0"></span>
 		</div>
 		<div id="sub_color_list">
-			<span id="sub_color_0" class="color_item" style="background-color:#ffffff;box-shadow : 0 0 0 1px #e7e7e7;"></span>
-			<span id="sub_color_1" class="color_item" style="background-color:#fafafa"></span>
-			<span id="sub_color_2" class="color_item" style="background-color:#eeeeee"></span>
-			<span id="sub_color_3" class="color_item" style="background-color:#bdbdbd"></span>
-			<span id="sub_color_4" class="color_item" style="background-color:#9e9e9e"></span>
-			<span id="sub_color_5" class="color_item" style="background-color:#757575"></span>
-			<span id="sub_color_6" class="color_item" style="background-color:#424242"></span>
-			<span id="sub_color_7" class="color_item" style="background-color:#000000"></span>
+			<span id="sub_color_0" class="color_item" style="background-color:#fff;box-shadow : 0 0 0 1px #e7e7e7;"></span>
+			<span id="sub_color_1" class="color_item" style="background-color:#ddd"></span>
+			<span id="sub_color_2" class="color_item" style="background-color:#bbb"></span>
+			<span id="sub_color_3" class="color_item" style="background-color:#999"></span>
+			<span id="sub_color_4" class="color_item" style="background-color:#777"></span>
+			<span id="sub_color_5" class="color_item" style="background-color:#555"></span>
+			<span id="sub_color_6" class="color_item" style="background-color:#333"></span>
+			<span id="sub_color_7" class="color_item" style="background-color:#333"></span>
 		</div>
 	</div>
 	<div id="bottom_view" >

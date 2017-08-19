@@ -391,8 +391,9 @@ function parseBitmap(data)
 	  }
 	  function decodeBitmap(str)
 	  {
-	    for(var i=0;i<width;i++)
-	        for(var j=0;j<height;j++)
+	  	alert("123456");
+	    for(var i=0;i<self.width;i++)
+	        for(var j=0;j<self.height;j++)
 	        {
 	          //bitmap[i][j] = decodeColor(str, j*width+i);
 	          setPointColor(i,j,decodeColor(str,j*width+i));

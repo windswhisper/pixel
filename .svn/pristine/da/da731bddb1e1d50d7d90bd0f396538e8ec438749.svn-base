@@ -35,6 +35,7 @@ body{
 	margin: 0;
 	background-color: #fff;
 	overflow: hidden;
+	padding: 0.71vh;
 }
 #main_color_list{
 	width: 100%;

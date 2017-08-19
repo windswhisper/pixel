@@ -7,7 +7,7 @@
         "start": "node server.js"
     },
     "dependencies": {
-        "ws" : "1.0.0",
+        "ws" : "1.0.0"
         "mysql":"latest"
     }
 }

@@ -40,6 +40,7 @@ window.onload=function(){
 	socket = new WebSocket('ws://111.206.45.12:30020');
 	socket.onopen = function(event) { 
 
+		alert("conect");
 
 	socket.send('{"event":1001,"index":0}');
 
@@ -47,6 +48,7 @@ window.onload=function(){
 		var res =  JSON.parse(result.data);
 		console.log(res);
 
+		alert(res);
 		switch(res.event)
 		{
 			case 2001:parseBitmap(res.data);
@@ -391,8 +393,8 @@ function parseBitmap(data)
 	  }
 	  function decodeBitmap(str)
 	  {
-	    for(var i=0;i<width;i++)
-	        for(var j=0;j<height;j++)
+	    for(var i=0;i<self.width;i++)
+	        for(var j=0;j<self.height;j++)
 	        {
 	          //bitmap[i][j] = decodeColor(str, j*width+i);
 	          setPointColor(i,j,decodeColor(str,j*width+i));

@@ -1,4 +1,3 @@
-var querySql = require("./querySql.js");
 
 var ORDER_TYPE_POINT = 1;
 var ORDER_TYPE_LINE = 2;
