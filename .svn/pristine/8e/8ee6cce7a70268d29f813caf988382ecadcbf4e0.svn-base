@@ -145,7 +145,7 @@ function Painting()
       else if(order.type==ORDER_TYPE_LINE)
         self.drawLine(order.x1,order.y1,order.x2,order.y2,self.decodeColor( order.color));
       else if(order.type==ORDER_TYPE_FILL)
-        self.fillColor(order.x,order.y,self.decodeColor(order.color));
+        self.fillColor(order.x,order.y,order.color);
     }
   }
 

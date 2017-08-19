@@ -32,6 +32,7 @@ function Painting()
   }
 
   this.drawPoint = function(x,y,color){
+    console.log(x+y+color);
     if(x<self.width&&y<self.height&&x>=0&&y>=0)
     {
       this.bitmap[x][y] = color;
@@ -94,7 +95,7 @@ function Painting()
   {
     if(color==colorRepleced)return;
 
-    self.bitmap[x][y] = color;
+    self.setPointColor(x,y,color);
 
     if(x-1>=0&&self.bitmap[x-1][y]==colorRepleced)
     {
@@ -145,7 +146,7 @@ function Painting()
       else if(order.type==ORDER_TYPE_LINE)
         self.drawLine(order.x1,order.y1,order.x2,order.y2,self.decodeColor( order.color));
       else if(order.type==ORDER_TYPE_FILL)
-        self.fillColor(order.x,order.y,self.decodeColor(order.color));
+        self.fillColor(order.x,order.y,order.color);
     }
   }
 
