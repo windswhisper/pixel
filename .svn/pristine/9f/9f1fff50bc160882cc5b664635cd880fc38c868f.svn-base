@@ -1,11 +1,9 @@
 var Painting = require("./Painting.js");
 var User = require("./User.js");
-var userService = new User();
 
 var EVENT_JOIN = 1001;
 var EVENT_DRAW = 1002;
 var EVENT_CREATE = 1003;
-var EVENT_LOGIN = 1004;
 
 var mainServiceInst = null;
 
@@ -52,9 +50,6 @@ function MainService()
         break;
       case EVENT_CREATE:
         var painting = self.createPainting(64,64,ws);
-        break;
-      case EVENT_LOGIN:
-        userService.login(ws,obj.username);
         break;
     }
   }

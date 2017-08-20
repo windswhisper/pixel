@@ -51,6 +51,7 @@ function Painting()
   }
   this.save = function()
   {
+    console.log(self.id);
     querySql('UPDATE pp_painting SET bitmap = "'+self.encodeBitmap()+'" WHERE id = '+self.id);
   }
 

@@ -46,6 +46,7 @@ window.onload=function(){
 
 
 		socket.send('{"event":1001,"index":16}');
+		socket.send('{"event":1004,"id":16}');
 
 		socket.onmessage = function(result,nTime){
 			var res =  JSON.parse(result.data);

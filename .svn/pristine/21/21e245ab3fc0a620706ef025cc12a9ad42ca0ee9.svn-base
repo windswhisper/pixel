@@ -54,7 +54,7 @@ function MainService()
         var painting = self.createPainting(64,64,ws);
         break;
       case EVENT_LOGIN:
-        userService.login(ws,obj.username);
+        userService.login(ws);
         break;
     }
   }
