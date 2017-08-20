@@ -5,7 +5,6 @@ var EVENT_DRAW = 1002;
 var ORDER_TYPE_POINT = 1;
 var ORDER_TYPE_LINE = 2;
 var ORDER_TYPE_FILL = 3;
-var ORDER_TYPE_PICKER = 4;
 
 var tempX;
 var tempY;
@@ -38,14 +37,11 @@ var COLOR = [
 ];
 
 window.onload=function(){
-
-	init(64,64);
-
 	socket = new WebSocket('ws://111.206.45.12:30020');
 	socket.onopen = function(event) { 
 
 
-	socket.send('{"event":1001,"index":16}');
+	socket.send('{"event":1001,"index":0}');
 
 	socket.onmessage = function(result,nTime){
 		var res =  JSON.parse(result.data);
@@ -100,8 +96,6 @@ window.onload=function(){
     		fillColor(x,y,color);
     	if(paintType==ORDER_TYPE_LINE)
     		drawLine(lineOx,lineOy,x,y,color);
-    	if(paintType==ORDER_TYPE_PICKER)
-    		pickColor(x,y);
 		sendOrderList();
     	return false;
 	});
@@ -132,10 +126,31 @@ window.onload=function(){
 	{
 		paintType = ORDER_TYPE_FILL;
 	});
-	$("#straw_button").click (function()
-	{
-		paintType = ORDER_TYPE_PICKER;
-	});
+
+
+	function onTouchStart(event) {
+		return true;
+	}
+
+	function onTouchMove(event) {
+		var e = event || window.event;  
+		var x=e.clientX-c.offsetLeft;
+    	x=Math.floor(x/10);
+    	var y=e.clientY-c.offsetTop;
+    	y=Math.floor(y/10);
+
+    	if(paintType==ORDER_TYPE_POINT)
+    		drawPoint(x,y,color);
+	    event.preventDefault();
+	    return true;
+	}
+   var touchable = 'createTouch' in document;
+
+	if (touchable) {
+	    c.addEventListener('touchstart', onTouchStart, false);
+	    c.addEventListener('touchmove', onTouchMove, false);
+	    c.addEventListener('touchend', onTouchEnd, false);
+	}
 
 
 	for(var i=0;i<8;i++)
@@ -155,6 +170,8 @@ window.onload=function(){
 		clickFunc.colorType = i;
 		$("#sub_color_"+i).click(clickFunc);
 	}
+
+	init(64,64);
 }
 
 
@@ -164,10 +181,7 @@ function setMainColor(id)
 
 	for(var i=0;i<8;i++)
 	{
-		var style = "background-color:"+COLOR[colorTab*8+i];
-		if(i==0&&colorTab==0)
-			style+=";box-shadow : 0 0 0 1px #e7e7e7;";
-		$("#sub_color_"+i).attr("style",style);
+		$("#sub_color_"+i).attr("style","background-color:"+COLOR[colorTab*8+i]);
 	}
 }
 function setSubColor(id)
@@ -335,17 +349,12 @@ function parseBitmap(data)
 		putOrderInList(order);
 		order.excute();
 	}
-	function pickColor(x,y)
-	{
-		color = bitmap[x][y];
-
-		paintType = ORDER_TYPE_POINT;
-	}
 
 	function setPointColor(x,y,color)
 	{
+		alert(width);
 		if(x>width-1||y>height-1)return;
-		bitmap[x][y] = color;
+		this.bitmap[x][y] = color;
 		cxt.fillStyle=getColorFromCode(color);
 		cxt.fillRect(x*10,y*10,10,10);
 	}

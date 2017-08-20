@@ -5,7 +5,6 @@ var EVENT_DRAW = 1002;
 var ORDER_TYPE_POINT = 1;
 var ORDER_TYPE_LINE = 2;
 var ORDER_TYPE_FILL = 3;
-var ORDER_TYPE_PICKER = 4;
 
 var tempX;
 var tempY;
@@ -45,7 +44,7 @@ window.onload=function(){
 	socket.onopen = function(event) { 
 
 
-	socket.send('{"event":1001,"index":16}');
+	socket.send('{"event":1001,"index":0}');
 
 	socket.onmessage = function(result,nTime){
 		var res =  JSON.parse(result.data);
@@ -100,8 +99,6 @@ window.onload=function(){
     		fillColor(x,y,color);
     	if(paintType==ORDER_TYPE_LINE)
     		drawLine(lineOx,lineOy,x,y,color);
-    	if(paintType==ORDER_TYPE_PICKER)
-    		pickColor(x,y);
 		sendOrderList();
     	return false;
 	});
@@ -131,10 +128,6 @@ window.onload=function(){
 	$("#fill_button").click (function()
 	{
 		paintType = ORDER_TYPE_FILL;
-	});
-	$("#straw_button").click (function()
-	{
-		paintType = ORDER_TYPE_PICKER;
 	});
 
 
@@ -334,12 +327,6 @@ function parseBitmap(data)
 		var order = new fillColorOrder(x,y,encodeColor(color));
 		putOrderInList(order);
 		order.excute();
-	}
-	function pickColor(x,y)
-	{
-		color = bitmap[x][y];
-
-		paintType = ORDER_TYPE_POINT;
 	}
 
 	function setPointColor(x,y,color)

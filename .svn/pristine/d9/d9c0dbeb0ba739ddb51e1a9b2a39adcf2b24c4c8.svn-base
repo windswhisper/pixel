@@ -34,6 +34,7 @@ function MainService()
   this.onMessage = function(ws,data)
   {
     var obj = JSON.parse(data);
+    console.log(data);
     switch(obj.event)
     {
       case 1001:
@@ -46,7 +47,6 @@ function MainService()
         break;
       case 1002:
         ws.painting.onGetOrder(obj.order,ws);
-        break;
       case 1003:
         var painting = self.createPainting(64,64,ws);
         break;

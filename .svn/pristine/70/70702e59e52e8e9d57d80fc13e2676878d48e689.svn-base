@@ -46,7 +46,6 @@ function MainService()
         break;
       case 1002:
         ws.painting.onGetOrder(obj.order,ws);
-        break;
       case 1003:
         var painting = self.createPainting(64,64,ws);
         break;

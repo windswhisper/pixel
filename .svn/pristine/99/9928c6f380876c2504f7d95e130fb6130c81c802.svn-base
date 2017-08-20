@@ -10,8 +10,8 @@ function Painting()
   this.id = 0;
   this.painterList = [];
   this.bitmap = [];
-  this.width = 64;
-  this.height = 64;
+  this.width = 8;
+  this.height = 8;
   this.mainServiceInst = null;
 
   this.create = function(width,height,ws)
@@ -38,7 +38,6 @@ function Painting()
       }
       else
       {
-        self.id = id;
         self.init(result[0].width,result[0].height);
         self.decodeBitmap(result[0].bitmap);
         self.onPainterJoin(ws);
@@ -47,8 +46,18 @@ function Painting()
   }
   this.save = function()
   {
-    console.log(self.id);
-    querySql('UPDATE pp_painting SET bitmap = "'+self.encodeBitmap()+'" WHERE id = '+self.id);
+    querySql('UPDATE pp_painting SET bitmap = "'+self.encodeBitmap()+'"',function(err,result,field){
+      if(result.length==0)
+      {
+        self.mainServiceInst.sendMsg(ws,2003,"error");
+      }
+      else
+      {
+        self.init(res[0].w,res[0].h);
+        self.decodeBitmap(res[0].bitmap);
+        self.onPainterJoin(ws);
+      }
+    });
   }
 
   this.init=function(width,height)
