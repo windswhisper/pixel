@@ -14,4 +14,4 @@ http.createServer(function (request, response) {
   fs.readFile(url.slice(1),function (err,data){
                 response.end(data);
             });
-}).listen(8080);
+}).listen(80);
