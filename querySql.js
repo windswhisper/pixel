@@ -1,10 +1,14 @@
 var mysql = require('mysql');
 
-var username = '1479298452884f28a43b6fdc9c4b2a5b';//用户AK
-var password = '64db8241be6d4d7c87f343841b2da2a1';//用户SK
-var db_host = 'sqld.duapp.com';
-var db_port = 4050;
-var db_name = 'rrXJBgFdMAUpwQFvymZr';
+//var username = '1479298452884f28a43b6fdc9c4b2a5b';//用户AK
+//var password = '64db8241be6d4d7c87f343841b2da2a1';//用户SK
+//var db_host = 'sqld.duapp.com';
+//var db_name = 'rrXJBgFdMAUpwQFvymZr';
+var username = 'root';//用户AK
+var password = '';//用户SK
+var db_port = 3306;
+var db_host = 'localhost';
+var db_name = 'db_pixelpaint';
 var option = {
   host: db_host,
   port: db_port,

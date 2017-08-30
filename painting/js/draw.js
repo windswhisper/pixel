@@ -41,7 +41,7 @@ window.onload=function(){
 
 	init(64,64);
 
-	socket = new WebSocket('ws://111.206.45.12:30020');
+	socket = new WebSocket('ws://47.94.99.108:8808');
 	socket.onopen = function(event) { 
 
 
