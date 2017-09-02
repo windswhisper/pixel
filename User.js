@@ -39,12 +39,12 @@ function User()
   }
   this.loginFinish = function(ws)
   {
-    self.mainServiceInst.sendMsg(painter,EVENT_LOGIN_RES,"succeed");
+    self.mainServiceInst.sendMsg(ws,EVENT_LOGIN_RES,"succeed");
   }
   this.getPaintList = function(ws)
   {
     querySql("SELECT pp_painting.id,pp_painting.width,pp_painting.height,pp_painting.bitmap FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id,function(err,result,field){
-      self.mainServiceInst.sendMsg(result,EVENT_PAINT_LIST_RES);
+      self.mainServiceInst.sendMsg(ws,EVENT_PAINT_LIST_RES,result);
     });
   }
 }
