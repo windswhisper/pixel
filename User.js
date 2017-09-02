@@ -52,7 +52,7 @@ function User()
   {
     if(ws.id==null)return;
     querySql("SELECT id FROM pp_paint WHERE painter_id = "+ws.id+" AND painting_id = "+id,function(err,result,field){
-        if(res.length==0)
+        if(result.length==0)
         {
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
         }
