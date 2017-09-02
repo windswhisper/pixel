@@ -18,6 +18,7 @@ function MainService()
 
   this.init = function(server)
   {
+    userService.bind(self);
     server.on('connection',function(ws){
       self.onUserConnect(ws);
     });
