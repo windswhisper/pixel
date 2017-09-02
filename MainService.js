@@ -1,6 +1,5 @@
 var Painting = require("./Painting.js");
 var User = require("./User.js");
-var userService = new User();
 
 var EVENT_JOIN = 1001;
 var EVENT_DRAW = 1002;
@@ -15,10 +14,11 @@ function MainService()
   var self = this;
   this.userList = [];
   this.paintingList = [];
+  this.userService = new User();
 
   this.init = function(server)
   {
-    userService.bind(self);
+    self.userService.bind(self);
     server.on('connection',function(ws){
       self.onUserConnect(ws);
     });
@@ -48,6 +48,7 @@ function MainService()
           painting = self.loadPainting(index,ws);
         else
           painting.onPainterJoin(ws);
+        self.userService.join(ws,index);
         break;
       case EVENT_DRAW:
         ws.painting.onGetOrder(obj.order,ws);
@@ -56,10 +57,10 @@ function MainService()
         var painting = self.createPainting(64,64,ws);
         break;
       case EVENT_LOGIN:
-        userService.login(ws,obj.username);
+        self.userService.login(ws,obj.username);
         break;
       case EVENT_PAINT_LIST:
-        userService.getPaintList(ws,obj.username);
+        self.userService.getPaintList(ws,obj.username);
         break;
     }
   }
