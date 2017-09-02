@@ -51,7 +51,7 @@ function User()
   this.join = function(ws,id)
   {
     if(ws.id==null)return;
-    querySql("SELECT pp_painting.id FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id+" AND pp_painting.painting_id = "+id,function(err,result,field){
+    querySql("SELECT id FROM pp_paint WHERE painter_id = "+ws.id+" AND painting_id = "+id,function(err,result,field){
         if(res.length==0)
         {
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
