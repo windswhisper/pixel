@@ -2,6 +2,7 @@ var querySql = require("./querySql.js");
 var escapeSql = require('./escapeSql');
 
 var EVENT_LOGIN_RES = 2004;
+var EVENT_PAINT_LIST_RES = 2005;
 
 function User()
 {
@@ -26,7 +27,7 @@ function User()
         ws.username = username;
         self.loginFinish(ws);
       }
-    })
+    });
   }
   this.register = function(ws,username)
   {
@@ -34,11 +35,17 @@ function User()
       ws.id=result.insertId;
       ws.username = username;
         self.loginFinish(ws);
-    })
+    });
   }
   this.loginFinish = function(ws)
   {
     self.mainServiceInst.sendMsg(painter,EVENT_LOGIN_RES,"succeed");
+  }
+  this.getAlbum = function(ws)
+  {
+    querySql("SELECT pp_painting.id,pp_painting.width,pp_painting.height,pp_painting.bitmap FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id,function(err,result,field){
+      self.mainServiceInst.sendMsg(result,EVENT_PAINT_LIST_RES);
+    });
   }
 }
 
