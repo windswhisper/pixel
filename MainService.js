@@ -54,7 +54,7 @@ function MainService()
         ws.painting.onGetOrder(obj.order,ws);
         break;
       case EVENT_CREATE:
-        var painting = self.createPainting(64,64,ws);
+        var painting = self.createPainting(obj.width,obj.height,ws);
         break;
       case EVENT_LOGIN:
         self.userService.login(ws,obj.username);

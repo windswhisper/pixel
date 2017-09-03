@@ -29,7 +29,7 @@ function Painting()
       else
       {
         self.id=result.insertId;
-        self.onPainterJoin(ws);
+        self.mainServiceInst.sendMsg(ws,EVENT_CREATE_RES,{id:id});
       }
     });
   }
