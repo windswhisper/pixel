@@ -47,8 +47,10 @@ function MainService()
         if(painting==null)
           painting = self.loadPainting(index,ws);
         else
+        {
           painting.onPainterJoin(ws);
-        self.userService.join(ws,index);
+          self.userService.join(ws,index);
+        }
         break;
       case EVENT_DRAW:
         ws.painting.onGetOrder(obj.order,ws);
