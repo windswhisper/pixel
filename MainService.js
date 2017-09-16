@@ -1,5 +1,6 @@
 var Painting = require("./Painting.js");
 var User = require("./User.js");
+const https = require('https');
 
 var EVENT_JOIN = 1001;
 var EVENT_DRAW = 1002;
@@ -7,6 +8,7 @@ var EVENT_CREATE = 1003;
 var EVENT_LOGIN = 1004;
 var EVENT_PAINT_LIST = 1005;
 var EVENT_QUIT = 1006;
+var EVENT_WXID = 1999;
 
 var mainServiceInst = null;
 
@@ -68,6 +70,9 @@ function MainService()
       case EVENT_QUIT:
         self.userService.quit(ws,obj.username);
         break;
+      case EVENT_WXID:
+
+        break;
     }
   }
 
@@ -114,7 +119,20 @@ function MainService()
     }
     return null;
   }
-}
+
+  this.getWxUserId = function(code)
+  {
+    var url = "https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+res.code+"&grant_type=authorization_code";
+    https.get(url, (res) => {
+    res.on('data', (d) => {
+
+      });
+
+    }).on('error', (e) => {
+
+      });
+    }
+  }
 
 module.exports.getInstance = function()
   {
