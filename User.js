@@ -62,7 +62,7 @@ function User()
   this.quit = function(ws,id)
   {
     if(ws.id==null)return;
-    querySql("DELETE pp_paint WHERE  painter_id = "+ws.id+" AND painting_id = "+id),function(err,result,field)
+    querySql("DELETE pp_paint WHERE  painter_id = "+ws.id+" AND painting_id = "+id,function(err,result,field)
     {
       self.mainServiceInst.sendMsg(ws,EVENT_QUIT_RES,"succeed");
     });
