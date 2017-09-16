@@ -1,4 +1,4 @@
-var http = require('http');
+/*var http = require('http');
 var fs   = require("fs");
 
 
@@ -13,15 +13,14 @@ var httpServer = http.createServer(function (request, response) {
 
 var ws = require('ws').Server;
 var server = new ws({server:httpServer});
-var MainService = require('./MainService.js');
+*/var MainService = require('./MainService.js');
 
-/*
 
 var https=require('https');
 var ws=require('ws');
 var fs=require('fs');
-var keypath='x/server.key';//我把秘钥文件放在运行命令的目录下测试
-var certpath='x/server.crt';//console.log(keypath);
+var keypath='x/ssl.key';//我把秘钥文件放在运行命令的目录下测试
+var certpath='x/ssl.crt';//console.log(keypath);
 //console.log(certpath);
  
 var options = {
@@ -38,13 +37,9 @@ var server=https.createServer(options, function (req, res) {//要是单纯的htt
  
 var wss = new ws.Server( { server: server } );//把创建好的https服务器丢进websocket的创建函数里，ws会用这个服务器来创建wss服务
 //同样，如果丢进去的是个http服务的话那么创建出来的还是无加密的ws服务
-wss.on( 'connection', function ( wsConnect ) {
-    wsConnect.on( 'message', function ( message ) {
-        console.log( message );
-    });
-});
-*/
+
+
 
 var mainService = MainService.getInstance();
-mainService.init(server);
+mainService.init(wss);
 
