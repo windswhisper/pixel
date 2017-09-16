@@ -39,7 +39,6 @@ var wss = new ws.Server( { server: server } );//把创建好的https服务器丢
 //同样，如果丢进去的是个http服务的话那么创建出来的还是无加密的ws服务
 
 
-
 var mainService = MainService.getInstance();
 mainService.init(wss);
 
