@@ -3,6 +3,7 @@ var escapeSql = require('./escapeSql');
 
 var EVENT_LOGIN_RES = 2004;
 var EVENT_PAINT_LIST_RES = 2005;
+var EVENT_QUIT_RES = 2006;
 
 function User()
 {
@@ -57,6 +58,14 @@ function User()
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
         }
       });
+  },
+  this.quit = function(ws,id)
+  {
+    if(ws.id==null)return;
+    querySql("DELETE pp_paint WHERE  painter_id = "+ws.id+" AND painting_id = "+id),function(err,result.field)
+    {
+      self.mainServiceInst.sendMsg(ws,EVENT_QUIT_RES,"succeed");
+    });
   }
 }
 

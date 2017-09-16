@@ -1,5 +1,5 @@
 var ws = require('ws').Server;
-var server = new ws({port:8808});
+var server = new ws({port:80});
 var MainService = require('./MainService.js');
 
 var mainService = MainService.getInstance();
@@ -14,4 +14,4 @@ http.createServer(function (request, response) {
   fs.readFile(url.slice(1),function (err,data){
                 response.end(data);
             });
-}).listen(80);
+}).listen(2000);

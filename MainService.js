@@ -6,6 +6,7 @@ var EVENT_DRAW = 1002;
 var EVENT_CREATE = 1003;
 var EVENT_LOGIN = 1004;
 var EVENT_PAINT_LIST = 1005;
+var EVENT_QUIT = 1006;
 
 var mainServiceInst = null;
 
@@ -63,6 +64,9 @@ function MainService()
         break;
       case EVENT_PAINT_LIST:
         self.userService.getPaintList(ws,obj.username);
+        break;
+      case EVENT_QUIT:
+        self.userService.quit(ws,obj.username);
         break;
     }
   }
