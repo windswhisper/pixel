@@ -1,20 +1,24 @@
 var ws = require('ws').Server;
-//var server = new ws({port:80});
+var server = new ws({port:80});
 var MainService = require('./MainService.js');
 
-
+/*
 
 var https=require('https');
 var ws=require('ws');
 var fs=require('fs');
+var keypath='x/server.key';//我把秘钥文件放在运行命令的目录下测试
+var certpath='x/server.crt';//console.log(keypath);
+//console.log(certpath);
  
 var options = {
-  key: "denghao",
-  cert: "senlinshidai",
+  key: fs.readFileSync(keypath),
+  cert: fs.readFileSync(certpath),
 };
  
+ 
 var server=https.createServer(options, function (req, res) {//要是单纯的https连接的话就会返回这个东西
-    res.writeHead(403);//403即可
+    res.writeHead(403);
     res.end("This is a  WebSockets server!\n");
 }).listen(80);
  
@@ -26,9 +30,10 @@ wss.on( 'connection', function ( wsConnect ) {
         console.log( message );
     });
 });
+*/
 
 var mainService = MainService.getInstance();
-mainService.init(wss);
+mainService.init(server);
 
 
 
