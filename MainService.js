@@ -8,7 +8,7 @@ var EVENT_CREATE = 1003;
 var EVENT_LOGIN = 1004;
 var EVENT_PAINT_LIST = 1005;
 var EVENT_QUIT = 1006;
-var EVENT_WXID = 1999;
+var EVENT_LOGIN_WX = 1999;
 
 var mainServiceInst = null;
 
@@ -71,8 +71,8 @@ function MainService()
       case EVENT_QUIT:
         self.userService.quit(ws,obj.index);
         break;
-      case EVENT_WXID:
-
+      case EVENT_LOGIN_WX:
+        self.getWxUserId(ws,obj.code);
         break;
     }
   }
@@ -121,12 +121,15 @@ function MainService()
     return null;
   }
 
-  this.getWxUserId = function(code)
+  this.getWxUserId = function(ws,code)
   {
-    var url = "https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+res.code+"&grant_type=authorization_code";
+    var APPID = "wx58915838e443eef9";
+    var SECRET = "0efc3d5cf09070c1e73d40f304c920d6";
+    var url = "https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+code+"&grant_type=authorization_code";
     https.get(url, (res) => {
     res.on('data', (d) => {
-
+        console.log(d);
+        self.userService.login(ws,d.openId);
       });
 
     }).on('error', (e) => {
