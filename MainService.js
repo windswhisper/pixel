@@ -56,7 +56,8 @@ function MainService()
         }
         break;
       case EVENT_DRAW:
-        ws.painting.onGetOrder(obj.order,ws);
+        if(ws.painting!=null)
+          ws.painting.onGetOrder(obj.order,ws);
         break;
       case EVENT_CREATE:
         var painting = self.createPainting(obj.width,obj.height,ws);
