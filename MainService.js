@@ -128,8 +128,8 @@ function MainService()
     var url = "https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+code+"&grant_type=authorization_code";
     https.get(url, (res) => {
     res.on('data', (d) => {
-        console.log(d);
-        self.userService.login(ws,d.openId);
+        var data = JSON.parse(d.toString());
+        self.userService.login(ws,data.openId);
       });
 
     }).on('error', (e) => {
