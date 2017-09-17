@@ -32,7 +32,7 @@ var options = {
 var server=https.createServer(options, function (req, res) {//要是单纯的https连接的话就会返回这个东西
     res.writeHead(403);
     res.end("This is a  WebSockets server!\n");
-}).listen(80);
+}).listen(443);
  
  
 var wss = new ws.Server( { server: server } );//把创建好的https服务器丢进websocket的创建函数里，ws会用这个服务器来创建wss服务
