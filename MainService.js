@@ -69,7 +69,7 @@ function MainService()
         self.userService.getPaintList(ws,obj.username);
         break;
       case EVENT_QUIT:
-        self.userService.quit(ws,obj.username);
+        self.userService.quit(ws,obj.index);
         break;
       case EVENT_WXID:
 
