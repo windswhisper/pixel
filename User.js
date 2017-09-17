@@ -16,7 +16,9 @@ function User()
   }
   this.login = function(ws,username)
   {
+        console.log(username);
     username = escapeSql(username);
+        console.log(username);
     querySql("SELECT * FROM pp_user WHERE username = "+username,function(err,result,field){
       if(result.length==0)
       {

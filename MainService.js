@@ -129,6 +129,7 @@ function MainService()
     https.get(url, (res) => {
     res.on('data', (d) => {
         var data = JSON.parse(d.toString());
+        console.log(data.openId);
         self.userService.login(ws,data.openId);
       });
 
