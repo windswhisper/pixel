@@ -56,7 +56,7 @@ function Painting()
   }
   this.getPaintersAvatar = function(ws)
   {
-    querySql('SELECT pp_user.avatar FROM pp_user LEFT JOIN pp_paint WHERE pp_paint.painting_id = '+self.id,function(err,result,field){
+    querySql('SELECT pp_user.avatar FROM pp_user LEFT JOIN pp_paint ON pp_paint.painter_id = pp_user.id WHERE pp_paint.painting_id = '+self.id,function(err,result,field){
       self.mainServiceInst.sendMsg(ws,EVENT_AVATAR_RES,result);
     })
   }
