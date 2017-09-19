@@ -3,6 +3,7 @@ var querySql = require("./querySql.js");
 var EVENT_JOIN_RES = 2001;
 var EVENT_DRAW_RES = 2002;
 var EVENT_CREATE_RES = 2003;
+var EVENT_AVATAR_RES = 2998;
 
 var ORDER_TYPE_POINT = 1;
 var ORDER_TYPE_LINE = 2;
@@ -52,6 +53,12 @@ function Painting()
   this.save = function()
   {
     querySql('UPDATE pp_painting SET bitmap = "'+self.encodeBitmap()+'" WHERE id = '+self.id);
+  }
+  this.getPaintersAvatar = function(ws)
+  {
+    querySql('SELECT pp_user.avatar FROM pp_user LEFT JOIN pp_paint WHERE pp_paint.painting_id = '+self.id,function(err,result,field){
+      self.mainServiceInst.sendMsg(ws,EVENT_AVATAR_RES,result);
+    })
   }
 
   this.init=function(width,height)

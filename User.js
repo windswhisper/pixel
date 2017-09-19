@@ -14,11 +14,10 @@ function User()
   {
     self.mainServiceInst = service;
   }
-  this.login = function(ws,username)
+  this.login = function(ws,username,avatar)
   {
-        console.log(username);
+    self.avatar = avatar;
     username = escapeSql(username);
-        console.log(username);
     querySql("SELECT * FROM pp_user WHERE username = "+username,function(err,result,field){
       if(result.length==0)
       {
@@ -32,17 +31,18 @@ function User()
       }
     });
   }
-  this.register = function(ws,username)
+  this.register = function(ws,username,avatar)
   {
     querySql('INSERT INTO pp_user(username) values('+username+')',function(err,result,field){
       ws.id=result.insertId;
       ws.username = username;
-        self.loginFinish(ws);
+      self.loginFinish(ws);
     });
   }
   this.loginFinish = function(ws)
   {
     self.mainServiceInst.sendMsg(ws,EVENT_LOGIN_RES,"succeed");
+    if(self.avatar!=null)self.saveAvatar();
   }
   this.getPaintList = function(ws)
   {
@@ -60,7 +60,7 @@ function User()
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
         }
       });
-  },
+  }
   this.quit = function(ws,id)
   {
     if(ws.id==null)return;
@@ -68,6 +68,12 @@ function User()
     {
       self.mainServiceInst.sendMsg(ws,EVENT_QUIT_RES,"succeed");
     });
+  }
+  this.saveAvatar = function(ws,avatar)
+  {
+    if(ws.id==null)return;
+    avatar = escapeSql(avatar);
+    querySql("UPDATE pp_user SET avatar='"+avatar+"' WHERE id = "+ws.id);
   }
 }
 

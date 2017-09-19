@@ -9,7 +9,9 @@ var EVENT_LOGIN = 1004;
 var EVENT_PAINT_LIST = 1005;
 var EVENT_QUIT = 1006;
 var EVENT_SAVE = 1007;
+
 var EVENT_LOGIN_WX = 1999;
+var EVENT_AVATAR = 1998;
 
 var mainServiceInst = null;
 
@@ -76,7 +78,10 @@ function MainService()
         ws.painting.save();
         break;
       case EVENT_LOGIN_WX:
-        self.getWxUserId(ws,obj.code);
+        self.getWxUserId(ws,obj.code,obj.avatar);
+        break;
+      case EVENT_AVATAR:
+        ws.painting.getPaintersAvatar(ws);
         break;
     }
   }
@@ -129,7 +134,7 @@ function MainService()
     return null;
   }
 
-  this.getWxUserId = function(ws,code)
+  this.getWxUserId = function(ws,code,avatar)
   {
     var APPID = "wx58915838e443eef9";
     var SECRET = "0efc3d5cf09070c1e73d40f304c920d6";
@@ -138,7 +143,7 @@ function MainService()
     res.on('data', (d) => {
         var data = JSON.parse(d.toString());
         console.log(data.openid);
-        self.userService.login(ws,data.openid);
+        self.userService.login(ws,data.openid,avatar);
       });
 
     }).on('error', (e) => {
