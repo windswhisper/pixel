@@ -1,6 +1,6 @@
 var Painting = require("./Painting.js");
 var User = require("./User.js");
-const https = require('https');
+var https = require('https');
 
 var EVENT_JOIN = 1001;
 var EVENT_DRAW = 1002;
@@ -8,6 +8,7 @@ var EVENT_CREATE = 1003;
 var EVENT_LOGIN = 1004;
 var EVENT_PAINT_LIST = 1005;
 var EVENT_QUIT = 1006;
+var EVENT_SAVE = 1007;
 var EVENT_LOGIN_WX = 1999;
 
 var mainServiceInst = null;
@@ -71,6 +72,9 @@ function MainService()
       case EVENT_QUIT:
         self.userService.quit(ws,obj.index);
         break;
+      case EVENT_SAVE:
+        ws.painting.save();
+        break;
       case EVENT_LOGIN_WX:
         self.getWxUserId(ws,obj.code);
         break;
@@ -79,6 +83,10 @@ function MainService()
 
   this.sendMsg = function(ws,event,data)
   {
+    if(ws.readyState != WebSocket.OPEN){
+      ws.painting.onPainterLeave(ws);
+      return
+    }
     var obj = {};
     obj.event = event;
     obj.data = data;
