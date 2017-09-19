@@ -73,7 +73,7 @@ function User()
   {
     if(ws.id==null)return;
     avatar = escapeSql(avatar);
-    querySql("UPDATE pp_user SET avatar='"+avatar+"' WHERE id = "+ws.id);
+    querySql("UPDATE pp_user SET avatar=\""+avatar+"\" WHERE id = "+ws.id);
   }
 }
 
