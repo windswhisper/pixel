@@ -72,7 +72,6 @@ function User()
   this.saveAvatar = function(ws,avatar)
   {
     if(ws.id==null)return;
-    avatar = escapeSql(avatar);
     querySql("UPDATE pp_user SET avatar=\""+avatar+"\" WHERE id = "+ws.id);
   }
 }
