@@ -83,7 +83,7 @@ function MainService()
 
   this.sendMsg = function(ws,event,data)
   {
-    if(ws.readyState != WebSocket.OPEN){
+    if(ws.readyState != ws.OPEN){
       ws.painting.onPainterLeave(ws);
       return
     }
