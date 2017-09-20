@@ -88,7 +88,8 @@ function MainService()
 
   this.sendMsg = function(ws,event,data)
   {
-    if(ws.readyState != ws.OPEN){
+
+    if(ws.painting!=null&&ws.readyState != ws.OPEN){
       ws.painting.onPainterLeave(ws);
       return
     }
