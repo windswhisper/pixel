@@ -30,6 +30,8 @@ var options = {
  
  
 var server=https.createServer(options, function (req, res) {//要是单纯的https连接的话就会返回这个东西 var url = request.url;
+  
+  var url = request.url;
   fs.readFile(url.slice(1),function (err,data){
                 response.end(data);
             });
