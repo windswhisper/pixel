@@ -33,8 +33,9 @@ var server=https.createServer(options, function (req, res) {//要是单纯的htt
   
   var url = req.url;
   fs.readFile(url.slice(1),function (err,data){
-                res.end(data);
-            });
+        res.writeHead(200, {'Content-Type': 'image/png'}); 
+        res.end(data);
+    });
 }).listen(443);
  
  
