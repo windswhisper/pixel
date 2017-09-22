@@ -14,11 +14,11 @@ var COLOR = [
 function getColor255(colorStr)
 {
 	var r16 = colorStr.substring(1,3);
-	var r10 = parseInt(i,16); 
+	var r10 = parseInt(r16,16); 
 	var g16 = colorStr.substring(3,5);
-	var g10 = parseInt(i,16); 
+	var g10 = parseInt(g16,16); 
 	var b16 = colorStr.substring(5,7);
-	var b10 = parseInt(i,16);  
+	var b10 = parseInt(b16,16);  
 	return {r:r10,g:g10,b:b10};
 }
 
