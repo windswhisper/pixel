@@ -24,9 +24,10 @@ function getColor255(colorStr)
 
 
 function saveBitmap(id,width,height,bitmap) {
-	var res = images(64,64);
-	var w = 64/width;
-	var block = images(64/width,64/width);
+  var FIX_SIZE = 256;
+	var res = images(FIX_SIZE,FIX_SIZE);
+	var w = FIX_SIZE/width;
+	var block = images(w,w);
     for(var j=0;j<height;j++)
         for(var i=0;i<width;i++)
         {
