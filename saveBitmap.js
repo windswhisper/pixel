@@ -1,4 +1,4 @@
-//var images = require('images');
+var images = require('images');
 
 var COLOR = [
   "#ffffff", "#fafafa", "#eeeeee", "#bdbdbd", "#9e9e9e", "#757575", "#424242", "#000000",
