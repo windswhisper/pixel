@@ -64,7 +64,7 @@ function Painting()
       if(self.painterList[i].id)
       {
         sqlCondition+=" id = "+self.painterList[i].id;
-        if(i!=self.painterList.length)
+        if(i!=self.painterList.length-1)
         {
           sqlCondition+=" OR";
         }
