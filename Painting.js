@@ -58,6 +58,7 @@ function Painting()
   }
   this.getPaintersAvatar = function()
   {
+    if(self.painterList.length==0)return;
     var sqlCondition = "";
     for(var i=0;i<self.painterList.length;i++)
     {
@@ -189,6 +190,7 @@ function Painting()
     bitmapData.height = self.height;
     bitmapData.bitmap = self.encodeBitmap();
     self.mainServiceInst.sendMsg(painter,EVENT_JOIN_RES,bitmapData);
+    self.getPaintersAvatar();
   }
 
   this.onGetOrder = function(order,painter)
@@ -222,6 +224,7 @@ function Painting()
     }
     painter.painting = null;
     self.save();
+    self.getPaintersAvatar();
   }
 
   this.encodeBitmap = function()
