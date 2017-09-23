@@ -48,6 +48,9 @@ function MainService()
     switch(obj.event)
     {
       case EVENT_JOIN:
+        if(ws.painting!=null)
+          ws.painting.onPainterLeave(ws);
+
         var index = obj.index;
         var painting = self.getPaintingById(index);
         if(painting==null)
@@ -145,7 +148,6 @@ function MainService()
     https.get(url, (res) => {
     res.on('data', (d) => {
         var data = JSON.parse(d.toString());
-        console.log(data.openid);
         self.userService.login(ws,data.openid,avatar);
       });
 
