@@ -32,7 +32,6 @@ function saveBitmap(id,width,height,bitmap) {
         for(var i=0;i<width;i++)
         {
         	var code = bitmap[i][j];
-          console.log(code);
         	var color = getColor255(COLOR[code]);
         	block.fill(color.r,color.g,color.b);
         	res.draw(block,i*w,j*w);
