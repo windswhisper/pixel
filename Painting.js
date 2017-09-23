@@ -56,10 +56,25 @@ function Painting()
     querySql('UPDATE pp_painting SET bitmap = "'+self.encodeBitmap()+'" WHERE id = '+self.id);
     saveBitmap(self.id,self.width,self.height,self.bitmap);
   }
-  this.getPaintersAvatar = function(ws)
+  this.getPaintersAvatar = function()
   {
-    querySql('SELECT pp_user.avatar FROM pp_user LEFT JOIN pp_paint ON pp_paint.painter_id = pp_user.id WHERE pp_paint.painting_id = '+self.id,function(err,result,field){
-      self.mainServiceInst.sendMsg(ws,EVENT_AVATAR_RES,result);
+    var sqlCondition = "";
+    for(var i=0;i<self.painterList.length;i++)
+    {
+      if(self.painterList[i].id)
+      {
+        sqlCondition+=" id = "+self.painterList[i].id;
+        if(i!=self.painterList.length)
+        {
+          sqlCondition+=" OR";
+        }
+      }
+    }
+    querySql('SELECT avatar FROM pp_user WHERE '+sqlCondition,function(err,result,field){
+      for(var i=0;i<self.painterList.length;i++)
+      {
+        self.mainServiceInst.sendMsg(self.painterList[i],EVENT_AVATAR_RES,result);
+      }
     })
   }
 
