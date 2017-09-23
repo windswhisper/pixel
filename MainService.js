@@ -90,8 +90,9 @@ function MainService()
   this.sendMsg = function(ws,event,data)
   {
 
-    if(ws.painting!=null&&ws.readyState != ws.OPEN){
-      ws.painting.onPainterLeave(ws);
+    if(ws.readyState != ws.OPEN){
+      if(ws.painting!=null)
+        ws.painting.onPainterLeave(ws);
       return
     }
     var obj = {};
