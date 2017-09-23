@@ -75,6 +75,7 @@ function MainService()
         self.userService.quit(ws,obj.index);
         break;
       case EVENT_SAVE:
+      if(ws.painting!=null)
         ws.painting.save();
         break;
       case EVENT_LOGIN_WX:
