@@ -99,6 +99,11 @@ function Painting()
   }
 
   this.drawPoint = function(x,y,color){
+    if(color==null)
+      {
+        console.log("BUG:COLOR IS UNDEFINE");
+        return;
+      }
     if(x<self.width&&y<self.height&&x>=0&&y>=0)
     {
       this.bitmap[x][y] = color;
@@ -252,6 +257,7 @@ function Painting()
 
   this.decodeColor = function(str,index)
   {
+    if(index==null)index = 0;
     return str.charCodeAt(index)-48;
   }
 }
