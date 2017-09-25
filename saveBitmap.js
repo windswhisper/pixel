@@ -32,8 +32,9 @@ function saveBitmap(id,width,height,bitmap) {
     for(var j=0;j<height;j++)
     {
         for(var i=0;i<width;i++)
-          str+=(bitmap[i][j]+"_");
+          str+=""+bitmap[i][j]+";";
         console.log(str);
+        str="";
       }
     for(var j=0;j<height;j++)
         for(var i=0;i<width;i++)
