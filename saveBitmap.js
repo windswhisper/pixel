@@ -28,9 +28,13 @@ function saveBitmap(id,width,height,bitmap) {
 	var res = images(FIX_SIZE,FIX_SIZE);
 	var w = FIX_SIZE/width;
 	var block = images(w,w);
+  var str = "";
     for(var j=0;j<height;j++)
+    {
         for(var i=0;i<width;i++)
-          console.log(bitmap[i][j]);
+          str+=(bitmap[i][j]+"_");
+        console.log(str);
+      }
     for(var j=0;j<height;j++)
         for(var i=0;i<width;i++)
         {
