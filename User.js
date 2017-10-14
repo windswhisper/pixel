@@ -47,7 +47,7 @@ function User()
   this.getPaintList = function(ws)
   {
     if(ws.id==null)return;
-    querySql("SELECT pp_painting.id,pp_painting.width,pp_painting.height,pp_painting.bitmap FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id,function(err,result,field){
+    querySql("SELECT pp_painting.id,pp_painting.width,pp_painting.height,pp_painting.bitmap FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id,function(err,result,field +" ORDER BY pp_paint.id DESC "){
       self.mainServiceInst.sendMsg(ws,EVENT_PAINT_LIST_RES,result);
     });
   }
