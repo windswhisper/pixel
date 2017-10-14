@@ -41,7 +41,7 @@ function User()
   }
   this.loginFinish = function(ws)
   {
-    self.mainServiceInst.sendMsg(ws,EVENT_LOGIN_RES,"succeed");
+    self.mainServiceInst.sendMsg(ws,EVENT_LOGIN_RES,ws.username);
     if(self.avatar!=null)self.saveAvatar(ws,self.avatar);
   }
   this.getPaintList = function(ws)
