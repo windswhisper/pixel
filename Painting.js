@@ -1,4 +1,5 @@
 var querySql = require("./querySql.js");
+var escapeSql = require("./escapeSql.js");
 var saveBitmap = require("./saveBitmap.js");
 
 var EVENT_JOIN_RES = 2001;
@@ -53,7 +54,9 @@ function Painting()
   }
   this.save = function()
   {
-    querySql('UPDATE pp_painting SET bitmap = "'+self.encodeBitmap()+'" WHERE id = '+self.id);
+    var str = self.encodeBitmap();
+    str = escapeSql(str);
+    querySql('UPDATE pp_painting SET bitmap = "'+str+'" WHERE id = '+self.id);
     saveBitmap(self.id,self.width,self.height,self.bitmap);
   }
   this.getPaintersAvatar = function()
