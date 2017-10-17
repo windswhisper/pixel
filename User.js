@@ -58,7 +58,7 @@ function User()
         if(id!=null)
         {
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
-          copyFile(arguments.callee..default_id,id);
+          copyFile(arguments.callee.default_id,id);
         }
       }
       callback.default_id = default_id;
