@@ -55,13 +55,12 @@ function User()
       var default_id = DEFAULT_PAINTING[i];
       querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_painting WHERE id ='+default_id,function(err,result,field){
         var id = result.insertId;
-
         if(id!=null)
         {
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
+          copyFile(default_id,id);
         }
 
-        copyFile(default_id,id);
       });
     }
   }
