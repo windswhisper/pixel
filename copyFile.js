@@ -5,16 +5,17 @@ function writeFile(newId,data){
     if(error){
       throw error;
     }else{
-      console.log("文件已保存");  
+      console.log("save succeed");  
     }
   });
 }
 
 function copyFile(id,newId){
   var fs = require('fs');
+  console.log("copy"+id+"-"+newId);
   fs.readFile("pic/"+id+".png", 'utf-8', function(err, data) {
     if (err) {
-      console.log("读取失败");
+      console.log("read fail");
     } else {
       writeFile(newFileName,data);
       return data;
