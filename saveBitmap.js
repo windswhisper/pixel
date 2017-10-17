@@ -41,6 +41,7 @@ function saveBitmap(id,width,height,bitmap) {
         {
         	var code = bitmap[i][j];
           if(code==null)code = 0;
+          if(code<0||code>64)code = 0;
         	var color = getColor255(COLOR[code]);
         	block.fill(color.r,color.g,color.b);
         	res.draw(block,i*w,j*w);
