@@ -5,6 +5,8 @@ var EVENT_LOGIN_RES = 2004;
 var EVENT_PAINT_LIST_RES = 2005;
 var EVENT_QUIT_RES = 2006;
 
+var DEFAULT_PAINTING = {305,307,232,316,317,320,321,260,323,309};
+
 function User()
 {
   var self = this;
@@ -37,12 +39,24 @@ function User()
       ws.id=result.insertId;
       ws.username = username;
       self.loginFinish(ws);
+      self.putDefaultPainting(ws);
     });
   }
   this.loginFinish = function(ws)
   {
     self.mainServiceInst.sendMsg(ws,EVENT_LOGIN_RES,ws.username);
     if(self.avatar!=null)self.saveAvatar(ws,self.avatar);
+  }
+  this.putDefaultPainting = function(ws)
+  {
+    for(var i=0;i<10;i++)
+    {
+      querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_painting WHERE id ='+DEFAULT_PAINTING[i],function(err,result,field){
+        var id = result.insertId;
+        if(id!=null)
+          querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
+      });
+    }
   }
   this.getPaintList = function(ws)
   {
