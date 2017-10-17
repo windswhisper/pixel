@@ -17,7 +17,7 @@ function copyFile(id,newId){
     if (err) {
       console.log("read fail");
     } else {
-      writeFile(newFileName,data);
+      writeFile(newId,data);
       return data;
     }
   });
