@@ -51,17 +51,18 @@ function User()
   this.putDefaultPainting = function(ws)
   {
     for(var i=0;i<10;i++)
-    {
+    { 
       var default_id = DEFAULT_PAINTING[i];
-      querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_painting WHERE id ='+default_id,function(err,result,field){
+      var callback = function(err,result,field){
         var id = result.insertId;
         if(id!=null)
         {
           querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+id+")");
-          copyFile(default_id,id);
+          copyFile(this.default_id,id);
         }
-
-      });
+      }
+      callback.default_id = default_id;
+      querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_painting WHERE id ='+default_id,callback);
     }
   }
   this.getPaintList = function(ws)
