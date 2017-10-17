@@ -1,5 +1,15 @@
 var fs=require("fs");
 
+function writeFile(newId,data){
+  fs.writeFile("pic/"+newId+".png",data,'utf8',function(error){
+    if(error){
+      throw error;
+    }else{
+      console.log("文件已保存");  
+    }
+  });
+}
+
 function copyFile(id,newId){
   var fs = require('fs');
   fs.readFile("pic/"+id+".png", 'utf-8', function(err, data) {
@@ -12,14 +22,5 @@ function copyFile(id,newId){
   });
 }
  
-function writeFile(newId,data){
-  fs.writeFile("pic/"+newId+".png",data,'utf8',function(error){
-    if(error){
-      throw error;
-    }else{
-      console.log("文件已保存");  
-    }
-  });
-}
 
-module.exports = copyFile();
+module.exports = copyFile;
