@@ -241,9 +241,10 @@ function Painting()
     for(var j=0;j<self.height;j++)
         for(var i=0;i<self.width;i++)
         {
+          if(self.bitmap[i][j]!=-9)
           str+=self.encodeColor(self.bitmap[i][j]);
         }
-    return str;
+    return str+"0";
   }
   this.decodeBitmap = function(str)
   {
