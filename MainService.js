@@ -147,7 +147,7 @@ function MainService()
   this.getWxUserId = function(ws,code,avatar)
   {
     var APPID = "wx58915838e443eef9";
-    var SECRET = "0efc3d5cf09070c1e73d40f304c920d6";
+    var SECRET = "18630c37d49823657ce2cf1c23647251";
     var url = "https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+code+"&grant_type=authorization_code";
     https.get(url, (res) => {
     res.on('data', (d) => {
