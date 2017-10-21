@@ -5,6 +5,7 @@ var escapeSql = require('./escapeSql');
 var EVENT_LOGIN_RES = 2004;
 var EVENT_PAINT_LIST_RES = 2005;
 var EVENT_QUIT_RES = 2006;
+var EVENT_COPY_RES = 2008;
 
 var DEFAULT_PAINTING = [305,307,232,316,317,320,321,260,323,309];
 

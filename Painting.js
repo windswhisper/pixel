@@ -5,7 +5,6 @@ var saveBitmap = require("./saveBitmap.js");
 var EVENT_JOIN_RES = 2001;
 var EVENT_DRAW_RES = 2002;
 var EVENT_CREATE_RES = 2003;
-var EVENT_COPY_RES = 2008;
 var EVENT_AVATAR_RES = 2998;
 
 var ORDER_TYPE_POINT = 1;
