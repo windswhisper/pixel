@@ -84,6 +84,7 @@ function User()
       {
         querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+result.insertId+")");
         self.mainServiceInst.sendMsg(ws,EVENT_COPY_RES,{id:result.insertId});
+          copyFile(id,result.insertId);
       }
     });
   }
