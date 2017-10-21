@@ -83,7 +83,7 @@ function MainService()
         ws.painting.save();
         break;
       case EVENT_COPY:
-        self.userService.copyPainting(ws,obj,index);
+        self.userService.copyPainting(ws,obj.index);
         break;
       case EVENT_LOGIN_WX:
         self.getWxUserId(ws,obj.code,obj.avatar);
