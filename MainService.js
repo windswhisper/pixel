@@ -9,6 +9,7 @@ var EVENT_LOGIN = 1004;
 var EVENT_PAINT_LIST = 1005;
 var EVENT_QUIT = 1006;
 var EVENT_SAVE = 1007;
+var EVENT_COPY = 1008;
 
 var EVENT_LOGIN_WX = 1999;
 var EVENT_AVATAR = 1998;
@@ -80,6 +81,9 @@ function MainService()
       case EVENT_SAVE:
       if(ws.painting!=null)
         ws.painting.save();
+        break;
+      case EVENT_COPY:
+        self.userService.copy(ws,obj,index);
         break;
       case EVENT_LOGIN_WX:
         self.getWxUserId(ws,obj.code,obj.avatar);

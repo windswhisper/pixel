@@ -68,8 +68,22 @@ function User()
   this.getPaintList = function(ws)
   {
     if(ws.id==null)return;
-    querySql("SELECT pp_painting.id,pp_painting.width,pp_painting.height,pp_painting.bitmap FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id +" ORDER BY pp_paint.id DESC ",function(err,result,field){
+    querySql("SELECT pp_painting.id FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id +" ORDER BY pp_paint.id DESC ",function(err,result,field){
       self.mainServiceInst.sendMsg(ws,EVENT_PAINT_LIST_RES,result);
+    });
+  }
+  this.copyPainting = function(ws,id)
+  {
+    querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_painting WHERE id = '+id,function(err,result,field){
+      if(result.length==0)
+      {
+        self.mainServiceInst.sendMsg(ws,EVENT_COPY_RES,"error");
+      }
+      else
+      {
+        querySql("INSERT INTO pp_paint(painter_id,painting_id) VALUES("+ws.id+","+result.insertId+")");
+        self.mainServiceInst.sendMsg(ws,EVENT_COPY_RES,{id:result.insertId});
+      }
     });
   }
   this.join = function(ws,id)
