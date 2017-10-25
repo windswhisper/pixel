@@ -14,6 +14,8 @@ var EVENT_COPY = 1008;
 var EVENT_LOGIN_WX = 1999;
 var EVENT_AVATAR = 1998;
 
+var EVENT_BLANK = 0;
+
 var mainServiceInst = null;
 
 function MainService()
@@ -90,6 +92,9 @@ function MainService()
         break;
       case EVENT_AVATAR:
         ws.painting.getPaintersAvatar(ws);
+        break;
+      case EVENT_BLANK:
+        self.sendMsg(ws,EVENT_BLANK,0);
         break;
     }
   }
