@@ -62,6 +62,7 @@ function Painting()
   }
   this.exportShareCard = function()
   {
+    self.save();
     exportShareCard(self.id);
   }
   this.getPaintersAvatar = function()
