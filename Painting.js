@@ -60,10 +60,10 @@ function Painting()
     querySql('UPDATE pp_painting SET bitmap = "'+str+'" WHERE id = '+self.id);
     saveBitmap(self.id,self.width,self.height,self.bitmap);
   }
-  this.exportShareCard = function()
+  this.exportShareCard = function(key)
   {
     self.save();
-    exportShareCard(self.id);
+    exportShareCard(self.id,key);
   }
   this.getPaintersAvatar = function()
   {

@@ -95,7 +95,7 @@ function MainService()
         ws.painting.getPaintersAvatar(ws);
         break;
       case EVENT_SHARE:
-        ws.painting.exportShareCard();
+        ws.painting.exportShareCard(obj.key);
         break;
       case EVENT_BLANK:
         self.sendMsg(ws,EVENT_BLANK,0);
