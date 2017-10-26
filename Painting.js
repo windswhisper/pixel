@@ -1,6 +1,7 @@
 var querySql = require("./querySql.js");
 var escapeSql = require("./escapeSql.js");
 var saveBitmap = require("./saveBitmap.js");
+var exportShareCard = require("./exportShareCard.js");
 
 var EVENT_JOIN_RES = 2001;
 var EVENT_DRAW_RES = 2002;
@@ -58,6 +59,10 @@ function Painting()
     str = str.replace('\\', '\\\\');
     querySql('UPDATE pp_painting SET bitmap = "'+str+'" WHERE id = '+self.id);
     saveBitmap(self.id,self.width,self.height,self.bitmap);
+  }
+  this.exportShareCard = function()
+  {
+    exportShareCard(self.id);
   }
   this.getPaintersAvatar = function()
   {
