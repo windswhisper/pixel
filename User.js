@@ -37,6 +37,7 @@ function User()
   }
   this.register = function(ws,username,avatar)
   {
+    if(avatar=="##none")
     querySql('INSERT INTO pp_user(username) values('+username+')',function(err,result,field){
       ws.id=result.insertId;
       ws.username = username;
@@ -68,7 +69,6 @@ function User()
   }
   this.getPaintList = function(ws)
   {
-    if(ws.id==null)return;
     querySql("SELECT pp_painting.id FROM pp_paint LEFT JOIN pp_painting ON pp_painting.id = pp_paint.painting_id WHERE painter_id = "+ws.id +" ORDER BY pp_paint.id DESC ",function(err,result,field){
       self.mainServiceInst.sendMsg(ws,EVENT_PAINT_LIST_RES,result);
     });
@@ -109,6 +109,7 @@ function User()
   this.saveAvatar = function(ws,avatar)
   {
     if(ws.id==null)return;
+    if(avatar.length==0)return;
     querySql("UPDATE pp_user SET avatar=\""+avatar+"\" WHERE id = "+ws.id);
   }
 }
