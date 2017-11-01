@@ -27,7 +27,7 @@ function saveBitmap(id,width,height,bitmap) {
   var FIX_SIZE = 768;
 	var w = Math.floor(FIX_SIZE/width);
 	var block = images(w,w);
-  FIX_SIZE=block*width;
+  FIX_SIZE=w*width;
   var res = images(FIX_SIZE,FIX_SIZE);
   var str = "";
     for(var j=0;j<height;j++)
