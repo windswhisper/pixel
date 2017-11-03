@@ -123,7 +123,7 @@ function User()
   this.publishWork = function(ws)
   {
     if(ws==null||ws.painting==null)return;
-    querySql("SELECT * FROM WHERE id="+ws.painting.id,function(err,result,field){
+    querySql("SELECT * FROM pp_painting WHERE id="+ws.painting.id,function(err,result,field){
       if(result.length>0)
       {
         querySql("INSERT INTO pp_work(width,height,bitmap,artist_id) VALUES("+result[0].width+","+result[0].height+","+result[0].bitmap+","+ws.id+")".id,function(err2,result2,field2){
