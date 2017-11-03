@@ -91,10 +91,10 @@ function MainService()
         self.userService.copyPainting(ws,obj.index);
         break;
       case EVENT_PUBLISH:
-        ws.publishWork(ws);
+        self.userService.publishWork(ws);
         break;
       case EVENT_WORK_LIST:
-        self.getWorkList(ws);
+        self.userService.getWorkList(ws);
         break;
 
       case EVENT_LOGIN_WX:
