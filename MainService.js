@@ -10,6 +10,8 @@ var EVENT_PAINT_LIST = 1005;
 var EVENT_QUIT = 1006;
 var EVENT_SAVE = 1007;
 var EVENT_COPY = 1008;
+var EVENT_PUBLISH = 1009;
+var EVENT_WORK_LIST = 1010;
 
 var EVENT_LOGIN_WX = 1999;
 var EVENT_AVATAR = 1998;
@@ -82,12 +84,19 @@ function MainService()
         self.userService.quit(ws,obj.index);
         break;
       case EVENT_SAVE:
-      if(ws.painting!=null)
-        ws.painting.save();
+        if(ws.painting!=null)
+          ws.painting.save();
         break;
       case EVENT_COPY:
         self.userService.copyPainting(ws,obj.index);
         break;
+      case EVENT_PUBLISH:
+        ws.publishWork(ws);
+        break;
+      case EVENT_WORK_LIST:
+        self.getWorkList(ws);
+        break;
+
       case EVENT_LOGIN_WX:
         self.getWxUserId(ws,obj.code,obj.avatar);
         break;
@@ -97,6 +106,7 @@ function MainService()
       case EVENT_SHARE:
         ws.painting.exportShareCard(obj.key);
         break;
+
       case EVENT_BLANK:
         self.sendMsg(ws,EVENT_BLANK,0);
         break;

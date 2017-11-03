@@ -6,6 +6,8 @@ var EVENT_LOGIN_RES = 2004;
 var EVENT_PAINT_LIST_RES = 2005;
 var EVENT_QUIT_RES = 2006;
 var EVENT_COPY_RES = 2008;
+var EVENT_PUBLISH_RES = 2009;
+var EVENT_WORK_LIST_RES = 2010;
 
 var DEFAULT_PAINTING = [305,307,232,316,317,320,321,260,323,309];
 
@@ -111,6 +113,31 @@ function User()
     if(ws.id==null)return;
     if(avatar.length==0)return;
     querySql("UPDATE pp_user SET avatar=\""+avatar+"\" WHERE id = "+ws.id);
+  }
+  this.getWorkList = function(ws)
+  {
+    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id ",function(err,result,field){
+        self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RES,result);
+    });
+  }
+  this.publishWork = function(ws)
+  {
+    if(ws==null||ws.painting==null)return;
+    querySql("SELECT * FROM WHERE id="+ws.painting.id,function(err,result,field){
+      if(result.length>0)
+      {
+        querySql("INSERT INTO pp_work(width,height,bitmap,artist_id) VALUES("+result[0].width+","+result[0].height+","+result[0].bitmap+","+ws.id+")".id,function(err2,result2,field2){
+          if(result.length==0)
+          {
+            self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"error");
+          }
+          else
+          {
+            self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"succeed");
+          }
+        });
+      }
+    });
   }
 }
 
