@@ -135,7 +135,7 @@ function User()
       if(result.length>0)
       {
         querySql('INSERT INTO pp_work(width,height,bitmap,artist_id) VALUES('+result[0].width+','+result[0].height+',"'+result[0].bitmap+'",'+ws.id+')',function(err2,result2,field2){
-          if(result.length==0)
+          if(result2.length==0)
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"error");
           }
