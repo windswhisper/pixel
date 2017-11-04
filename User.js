@@ -135,14 +135,14 @@ function User()
       if(result.length>0)
       {
         querySql('INSERT INTO pp_work(width,height,bitmap,artist_id) VALUES('+result[0].width+','+result[0].height+',"'+result[0].bitmap+'",'+ws.id+')',function(err2,result2,field2){
-          if(result2.length==0)
+          if(!result2.insertId)
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"error");
           }
           else
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"succeed");
-            saveBitmap("w"+result2[0].insertId,result[0].width,result[0].height,result[0].bitmap);
+            saveBitmap("w"+result2.insertId,result[0].width,result[0].height,result[0].bitmap);
           }
         });
       }
