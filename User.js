@@ -1,6 +1,7 @@
 var querySql = require("./querySql.js");
 var copyFile = require("./copyFile.js");
 var escapeSql = require('./escapeSql');
+var saveBitmap = require("./saveBitmap.js");
 
 var EVENT_LOGIN_RES = 2004;
 var EVENT_PAINT_LIST_RES = 2005;
@@ -8,6 +9,7 @@ var EVENT_QUIT_RES = 2006;
 var EVENT_COPY_RES = 2008;
 var EVENT_PUBLISH_RES = 2009;
 var EVENT_WORK_LIST_RES = 2010;
+var EVENT_WORK_LIST_RATE_RES = 2011;
 
 var DEFAULT_PAINTING = [305,307,232,316,317,320,321,260,323,309];
 
@@ -116,7 +118,13 @@ function User()
   }
   this.getWorkList = function(ws)
   {
-    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id ",function(err,result,field){
+    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id WHERE pp_like.user_id="+ws.id+"  ORDER BY pp_work.id DESC LIMIT 0,50",function(err,result,field){
+        self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RES,result);
+    });
+  }
+  this.getWorkListByRating = function(ws)
+  {
+    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id WHERE pp_like.user_id="+ws.id+" ORDER BY pp_work.like_count DESC LIMIT 0,50",function(err,result,field){
         self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RES,result);
     });
   }
@@ -134,10 +142,20 @@ function User()
           else
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"succeed");
+            saveBitmap("w"+result2[0].insertId,result[0].width,result[0].height,result[0].bitmap);
           }
         });
       }
     });
+  }
+  this.like = function(ws,workId){
+    querySql("UPDATE pp_work SET like_count=like_count+1 WHERE id="+workId);
+    querySql("INSERT INTO pp_like(work_id,user_id) VALUES("+workId+","+ws.id+")");
+  }
+  this.unlike = function(ws,workId)
+  {
+    querySql("UPDATE pp_work SET like_count=like_count+1 WHERE id="+workId);
+    querySql("DELETE FROM pp_like WHERE work_id="+workId);
   }
 }
 

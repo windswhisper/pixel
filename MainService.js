@@ -12,6 +12,9 @@ var EVENT_SAVE = 1007;
 var EVENT_COPY = 1008;
 var EVENT_PUBLISH = 1009;
 var EVENT_WORK_LIST = 1010;
+var EVENT_WORK_LIST_RATE = 1011;
+var EVENT_LIKE = 1012;
+var EVENT_UNLIKE = 1013;
 
 var EVENT_LOGIN_WX = 1999;
 var EVENT_AVATAR = 1998;
@@ -95,6 +98,15 @@ function MainService()
         break;
       case EVENT_WORK_LIST:
         self.userService.getWorkList(ws);
+        break;
+      case EVENT_WORK_LIST_RATE:
+        self.userService.getWorkListByRating(ws);
+        break;
+      case EVENT_LIKE:
+        self.userService.like(ws,obj.index);
+        break;
+      case EVENT_UNLIKE:
+        self.userService.unlike(ws,obj.index);
         break;
 
       case EVENT_LOGIN_WX:
