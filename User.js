@@ -142,7 +142,7 @@ function User()
           else
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"succeed");
-            saveBitmap("w"+result2.insertId,result[0].width,result[0].height,result[0].bitmap);
+            saveBitmap("w"+result2.insertId,result[0].width,result[0].height,ws.painting.bitmap);
           }
         });
       }
