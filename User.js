@@ -118,14 +118,14 @@ function User()
   }
   this.getWorkList = function(ws)
   {
-    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id WHERE pp_like.user_id="+ws.id+"  ORDER BY pp_work.id DESC LIMIT 0,50",function(err,result,field){
+    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+"  ORDER BY pp_work.id DESC LIMIT 0,50",function(err,result,field){
         self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RES,result);
     });
   }
   this.getWorkListByRating = function(ws)
   {
-    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id WHERE pp_like.user_id="+ws.id+" ORDER BY pp_work.like_count DESC LIMIT 0,50",function(err,result,field){
-        self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RES,result);
+    querySql("SELECT * FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+" ORDER BY pp_work.like_count DESC LIMIT 0,50",function(err,result,field){
+        self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RATE_RES,result);
     });
   }
   this.publishWork = function(ws)
