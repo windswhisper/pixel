@@ -30,13 +30,7 @@ function saveBitmap(id,width,height,bitmap) {
   FIX_SIZE=w*width;
   var res = images(FIX_SIZE,FIX_SIZE);
   var str = "";
-    for(var j=0;j<height;j++)
-    {
-        for(var i=0;i<width;i++)
-          str+=""+bitmap[i][j]+";";
-        console.log(str);
-        str="";
-      }
+  console.log(bitmap);
     for(var j=0;j<height;j++)
         for(var i=0;i<width;i++)
         {
