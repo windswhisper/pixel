@@ -30,13 +30,13 @@ function saveBitmap(id,width,height,bitmap) {
   FIX_SIZE=w*width;
   var res = images(FIX_SIZE,FIX_SIZE);
   var str = "";
-  console.log(width+"-"+height+"-"+bitmap);
     for(var j=0;j<height;j++)
         for(var i=0;i<width;i++)
         {
         	var code = bitmap[i][j];
+          console.log(code+'i'+'j');
           if(code==null)code = 0;
-          if(code<0||code>64)code = 0;
+          if(code<0||code>=64)code = 0;
         	var color = getColor255(COLOR[code]);
         	block.fill(color.r,color.g,color.b);
         	res.draw(block,i*w,j*w);
