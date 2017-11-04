@@ -34,7 +34,7 @@ function saveBitmap(id,width,height,bitmap) {
         for(var i=0;i<width;i++)
         {
         	var code = bitmap[i][j];
-          console.log(code+'i'+'j');
+          console.log(":"+code+':'+i+j);
           if(code==null)code = 0;
           if(code<0||code>=64)code = 0;
         	var color = getColor255(COLOR[code]);
