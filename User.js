@@ -10,6 +10,7 @@ var EVENT_COPY_RES = 2008;
 var EVENT_PUBLISH_RES = 2009;
 var EVENT_WORK_LIST_RES = 2010;
 var EVENT_WORK_LIST_RATE_RES = 2011;
+var EVENT_COPY_WORK_RES = 2014;
 
 var DEFAULT_PAINTING = [305,307,232,316,317,320,321,260,323,309];
 
@@ -156,6 +157,21 @@ function User()
   {
     querySql("UPDATE pp_work SET like_count=like_count-1 WHERE id="+workId);
     querySql("DELETE FROM pp_like WHERE work_id="+workId+" AND user_id="+ws.id);
+  }
+  this.copyWork = function(ws,workId)
+  {
+    querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_work WHERE id = '+id,function(err,result,field){
+      if(result.length==0)
+      {
+        self.mainServiceInst.sendMsg(ws,EVENT_COPY_WORK_RES,"error");
+      }
+      else
+      {
+        self.mainServiceInst.sendMsg(ws,EVENT_COPY_WORK_RES,{id:result.insertId});
+        copyFile(id,result.insertId);
+      }
+    });
+  }
   }
 }
 
