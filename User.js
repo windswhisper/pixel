@@ -119,13 +119,13 @@ function User()
   }
   this.getWorkList = function(ws)
   {
-    querySql("SELECT pp_work.id,pp_like.work_id,pp_work.like_count FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+"  ORDER BY pp_work.id DESC LIMIT 0,50",function(err,result,field){
+    querySql("SELECT pp_work.id,pp_like.work_id,pp_work.like_count FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+"  ORDER BY pp_work.id DESC LIMIT 0,20",function(err,result,field){
         self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RES,result);
     });
   }
   this.getWorkListByRating = function(ws)
   {
-    querySql("SELECT pp_work.id,pp_like.work_id,pp_work.like_count FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+" ORDER BY pp_work.like_count DESC LIMIT 0,50",function(err,result,field){
+    querySql("SELECT pp_work.id,pp_like.work_id,pp_work.like_count FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+" ORDER BY pp_work.like_count DESC LIMIT 0,20",function(err,result,field){
         self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RATE_RES,result);
     });
   }

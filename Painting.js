@@ -56,7 +56,7 @@ function Painting()
   this.save = function()
   {
     var str = self.encodeBitmap();
-    str = str.replace('\\', '\\\\');
+    str = escapeSql(str);
     querySql('UPDATE pp_painting SET bitmap = "'+str+'" WHERE id = '+self.id);
     saveBitmap(self.id,self.width,self.height,self.bitmap);
   }
