@@ -25,9 +25,10 @@ function User()
   {
     self.mainServiceInst = service;
   }
-  this.login = function(ws,username,avatar)
+  this.login = function(ws,username,avatar,nickName)
   {
     self.avatar = avatar;
+    self.nickName = nickName;
     username = escapeSql(username);
     querySql("SELECT * FROM pp_user WHERE username = "+username,function(err,result,field){
       if(result.length==0)
@@ -55,7 +56,7 @@ function User()
   this.loginFinish = function(ws)
   {
     self.mainServiceInst.sendMsg(ws,EVENT_LOGIN_RES,ws.username);
-    if(self.avatar!=null)self.saveAvatar(ws,self.avatar);
+    if(self.avatar!=null)self.saveAvatar(ws,self.avatar,self.nickName);
   }
   this.putDefaultPainting = function(ws)
   {
@@ -113,7 +114,7 @@ function User()
       self.mainServiceInst.sendMsg(ws,EVENT_QUIT_RES,"succeed");
     });
   }
-  this.saveAvatar = function(ws,avatar)
+  this.saveAvatar = function(ws,avatar,nickName)
   {
     if(ws.id==null)return;
     if(avatar.length==0)return;

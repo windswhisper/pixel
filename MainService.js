@@ -122,7 +122,7 @@ function MainService()
         break;
 
       case EVENT_LOGIN_WX:
-        self.getWxUserId(ws,obj.code,obj.avatar);
+        self.getWxUserId(ws,obj.code,obj.avatar,obj.nickName);
         break;
       case EVENT_AVATAR:
         ws.painting.getPaintersAvatar(ws);
@@ -187,7 +187,7 @@ function MainService()
     return null;
   }
 
-  this.getWxUserId = function(ws,code,avatar)
+  this.getWxUserId = function(ws,code,avatar,nickName)
   {
     var APPID = "wx58915838e443eef9";
     var SECRET = "18630c37d49823657ce2cf1c23647251";
@@ -195,7 +195,7 @@ function MainService()
     https.get(url, (res) => {
     res.on('data', (d) => {
         var data = JSON.parse(d.toString());
-        self.userService.login(ws,data.openid,avatar);
+        self.userService.login(ws,data.openid,avatar,nickName);
       });
 
     }).on('error', (e) => {
