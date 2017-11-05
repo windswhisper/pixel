@@ -167,6 +167,7 @@ function User()
       }
       else
       {
+        self.join(ws,result.insertId);
         self.mainServiceInst.sendMsg(ws,EVENT_COPY_WORK_RES,{id:result.insertId});
         copyFile("w"+workId,result.insertId);
       }
