@@ -155,7 +155,7 @@ function User()
   this.unlike = function(ws,workId)
   {
     querySql("UPDATE pp_work SET like_count=like_count+1 WHERE id="+workId);
-    querySql("DELETE FROM pp_like WHERE work_id="+workId);
+    querySql("DELETE FROM pp_like WHERE work_id="+workId+" AND user_id="+ws.id);
   }
 }
 
