@@ -160,7 +160,7 @@ function User()
   }
   this.copyWork = function(ws,workId)
   {
-    querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_work WHERE id = '+id,function(err,result,field){
+    querySql('INSERT INTO pp_painting(width,height,bitmap) SELECT width,height,bitmap FROM pp_work WHERE id = '+workId,function(err,result,field){
       if(result.length==0)
       {
         self.mainServiceInst.sendMsg(ws,EVENT_COPY_WORK_RES,"error");
