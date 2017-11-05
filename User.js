@@ -132,10 +132,7 @@ function User()
   this.publishWork = function(ws)
   {
     if(ws==null||ws.painting==null)return;
-    querySql("SELECT * FROM pp_painting WHERE id="+ws.painting.id,function(err,result,field){
-      if(result.length>0)
-      {
-        querySql('INSERT INTO pp_work(width,height,bitmap,artist_id) VALUES('+result[0].width+','+result[0].height+',"'+result[0].bitmap+'",'+ws.id+')',function(err2,result2,field2){
+        querySql('INSERT INTO pp_work(width,height,bitmap,artist_id) VALUES('+ws.painting.width+','+ws.painting.height+',"'+escapeSql(ws.painting.encodeBitmap)+'",'+ws.id+')',function(err2,result2,field2){
           if(!result2.insertId)
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"error");
@@ -143,11 +140,10 @@ function User()
           else
           {
             self.mainServiceInst.sendMsg(ws,EVENT_PUBLISH_RES,"succeed");
-            saveBitmap("w"+result2.insertId,result[0].width,result[0].height,ws.painting.bitmap);
+            saveBitmap("w"+result2.insertId,ws.painting.width,ws.painting.height,ws.painting.bitmap);
           }
         });
-      }
-    });
+      
   }
   this.like = function(ws,workId){
     querySql("UPDATE pp_work SET like_count=like_count+1 WHERE id="+workId);
