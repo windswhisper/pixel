@@ -179,7 +179,7 @@ function User()
   }
   this.getLikeMsg = function(ws)
   {
-    querySql('SELECT pp_like.time,pp_like.work_id,pp_user.avatar FROM pp_like LEFT JOIN pp_work ON pp_work.id=pp_like.work_id LEFT JOIN pp_user ON pp_work.artist_id=pp_user.id WHERE pp_user.id='+ws.id,function(err,result,field){
+    querySql('SELECT pp_like.time,pp_like.work_id,pp_user.avatar FROM pp_like LEFT JOIN pp_work ON pp_work.id=pp_like.work_id LEFT JOIN pp_user ON pp_work.artist_id=pp_user.id WHERE pp_user.id='+ws.id+' ORDER BY pp_like.id DESC',function(err,result,field){
       self.mainServiceInst.sendMsg(ws,EVENT_LIKE_MSG_RES,result);
     });
   }
