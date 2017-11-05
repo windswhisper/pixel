@@ -11,6 +11,8 @@ var EVENT_PUBLISH_RES = 2009;
 var EVENT_WORK_LIST_RES = 2010;
 var EVENT_WORK_LIST_RATE_RES = 2011;
 var EVENT_COPY_WORK_RES = 2014;
+var EVENT_LIKE_MSG_RES = 2015;
+var EVENT_WORK_LIST_RANDOM_RES = 2016;
 
 var DEFAULT_PAINTING = [305,307,232,316,317,320,321,260,323,309];
 
@@ -129,6 +131,12 @@ function User()
         self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RATE_RES,result);
     });
   }
+  this.getWorkListRandom = function(ws)
+  {
+    querySql("SELECT pp_work.id,pp_like.work_id,pp_work.like_count FROM pp_work LEFT OUTER JOIN pp_like on pp_work.id=pp_like.work_id AND pp_like.user_id="+ws.id+" ORDER BY pp_work.like_count DESC LIMIT 0,20",function(err,result,field){
+        self.mainServiceInst.sendMsg(ws,EVENT_WORK_LIST_RANDOM_RES,result);
+    });
+  }
   this.publishWork = function(ws)
   {
     if(ws==null||ws.painting==null)return;
@@ -167,6 +175,12 @@ function User()
         self.mainServiceInst.sendMsg(ws,EVENT_COPY_WORK_RES,{id:result.insertId});
         copyFile("w"+workId,result.insertId);
       }
+    });
+  }
+  this.getLikeMsg = function(ws)
+  {
+    querySql('SELECT pp_like.time,pp_like.work_id,pp_user.avatar FROM pp_like LEFT JOIN pp_work ON pp_work.id=pp_like.work_id LEFT JOIN pp_user ON pp_work.artist_id=pp_user.id WHERE pp_user.id='+ws.id,function(err,result,field){
+      self.mainServiceInst.sendMsg(ws,EVENT_LIKE_MSG_RES,result);
     });
   }
 }

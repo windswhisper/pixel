@@ -17,6 +17,7 @@ var EVENT_LIKE = 1012;
 var EVENT_UNLIKE = 1013;
 var EVENT_COPY_WORK = 1014;
 var EVENT_LIKE_MSG = 1015;
+var EVENT_WORK_LIST_RANDOM = 1016;
 
 var EVENT_LOGIN_WX = 1999;
 var EVENT_AVATAR = 1998;
@@ -104,6 +105,9 @@ function MainService()
       case EVENT_WORK_LIST_RATE:
         self.userService.getWorkListByRating(ws);
         break;
+      case EVENT_WORK_LIST_RANDOM:
+        self.userService.getWorkListByRandom(ws);
+        break;
       case EVENT_LIKE:
         self.userService.like(ws,obj.index);
         break;
@@ -112,6 +116,9 @@ function MainService()
         break;
       case EVENT_COPY_WORK:
         self.userService.copyWork(ws,obj.index);
+        break;
+      case EVENT_LIKE_MSG:
+        self.userService.getLikeMsg(ws);
         break;
 
       case EVENT_LOGIN_WX:
