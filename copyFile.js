@@ -12,7 +12,6 @@ function writeFile(newId,data){
 
 function copyFile(id,newId){
   var fs = require('fs');
-  console.log("copy"+id+"-"+newId);
   fs.readFile("pic/"+id+".png", function(err, data) {
     if (err) {
       console.log("read fail");

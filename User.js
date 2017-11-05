@@ -168,7 +168,7 @@ function User()
       else
       {
         self.mainServiceInst.sendMsg(ws,EVENT_COPY_WORK_RES,{id:result.insertId});
-        copyFile(id,result.insertId);
+        copyFile("w"+workId,result.insertId);
       }
     });
   }
