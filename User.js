@@ -118,7 +118,7 @@ function User()
   {
     if(ws.id==null)return;
     if(avatar.length==0)return;
-    querySql("UPDATE pp_user SET avatar=\""+avatar+"\",nickName=\""+nickName+"\" WHERE id = "+ws.id);
+    querySql("UPDATE pp_user SET avatar=\""+avatar+"\",nick_name=\""+nickName+"\" WHERE id = "+ws.id);
   }
   this.getWorkList = function(ws)
   {
